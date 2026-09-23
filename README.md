@@ -1,27 +1,38 @@
 # Skills
 
-Personal agent skills by [Peter Shih](https://github.com/ptshih).
+Personal agent skills by [Peter Shih](https://github.com/ptshih), for Claude Code, Codex, Pi and
+any other agent that reads Agent Skills.
 
 ## Install
 
 ```bash
-npx skills add ptshih/skills --skill handoff
+npx skills@latest add ptshih/skills -g --skill <name>
 ```
 
-## Handoff
+`-g` installs for your user rather than one project; pick the agents when prompted, or pass
+`-a claude-code -a codex`. Leave out `--skill` to choose from the list. Update later with:
 
-[handoff](skills/handoff/SKILL.md) summarizes a session so a fresh agent can continue.
-It prints the handoff in chat, copies the same text to the clipboard, and saves a
-temporary Markdown file with a clickable path. Clipboard copying uses `pbcopy` on
-macOS; if it fails, the agent reports the failure and still provides the chat output
-and file.
+```bash
+npx skills@latest update
+```
 
-Ask your agent:
+## Productivity
 
-> Use the handoff skill to prepare a fresh session focused on the remaining work.
+### Model-invoked
+
+- **[handoff](skills/productivity/handoff/SKILL.md)**: Summarize the current session so a fresh
+  agent can continue. It prints the handoff in chat, copies the same text to the clipboard, and
+  saves a temporary Markdown file with a clickable path. Clipboard copying uses `pbcopy` on
+  macOS; if it fails, the agent reports the failure and still provides the chat output and file.
 
 ## Attribution
 
 The handoff skill is adapted from [Matt Pocock's handoff skill](https://github.com/mattpocock/skills/blob/main/skills/productivity/handoff/SKILL.md),
 with repository-state verification and chat, clipboard, and temporary-file output.
-The [upstream MIT notice](skills/handoff/THIRD_PARTY_NOTICES.md) is included.
+The [upstream MIT notice](skills/productivity/handoff/THIRD_PARTY_NOTICES.md) is included.
+
+The repository layout follows [mattpocock/skills](https://github.com/mattpocock/skills).
+
+## License
+
+[MIT](LICENSE)
