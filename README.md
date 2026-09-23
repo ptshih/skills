@@ -16,6 +16,15 @@ npx skills@latest add ptshih/skills -g --skill <name>
 npx skills@latest update
 ```
 
+## Engineering
+
+### Model-invoked
+
+- **[todo](skills/engineering/todo/SKILL.md)**: Work a repo's engineering backlog in `TODO.md`:
+  show what is open as ready, needs-your-call and blocked tables, add, work, update and close
+  items, and groom the file for stale content and a backlog you can hold in your head. Each
+  repo's `TODO.md` header declares its own areas and gate tags.
+
 ## Productivity
 
 ### Model-invoked
