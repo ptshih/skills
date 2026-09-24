@@ -95,7 +95,9 @@ To show one item in full, get its line number, then read that range **plus the
 ## Showing the list
 
 Answer "what's open" with a count line and three markdown tables — real
-tables, not a code block — in `list.sh` order:
+tables, not a code block — in `list.sh` order. Take every number in the count
+line from `sh ${CLAUDE_SKILL_DIR}/scripts/list.sh | cut -f1 | sort | uniq -c`
+(ready, you, blocked; open is their sum), never by counting rows:
 
 ```
 **25 open** · 6 ready · 12 need you · 7 blocked
@@ -134,7 +136,8 @@ Narrower asks reuse the same tables:
 - **What should I pick up** — one sentence naming the pick, the Ready table cut
   to three rows, then one line of twenty words or fewer per row on why: what it
   unblocks, which story it builds, any order its section preamble sets. Close
-  with "N more wait on your call." Nothing else — alternatives are what the
+  with "N more wait on your call," N being the `you` count from that same
+  command. Nothing else — alternatives are what the
   full list is for. Offering a gated item as the next move wastes the turn:
   those wait on a decision, not on effort.
 - **What needs my call** — the Needs-your-call table alone.
