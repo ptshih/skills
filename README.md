@@ -24,6 +24,10 @@ npx skills@latest update
   show what is open as ready, needs-your-call and blocked tables, add, work, update and close
   items, and groom the file for stale content and a backlog you can hold in your head. Each
   repo's `TODO.md` header declares its own areas and gate tags.
+- **[walkthrough](skills/engineering/walkthrough/SKILL.md)**: Write a linear walkthrough of a
+  change, feature or module in execution order. Every code excerpt comes from a command such as
+  `sed -n` or `git show`, never retyped, and the result is saved to a private temporary
+  Markdown file.
 
 ## Productivity
 
@@ -38,6 +42,9 @@ npx skills@latest update
 
 The handoff skill is adapted from [Matt Pocock's handoff skill](https://github.com/mattpocock/skills/blob/main/skills/productivity/handoff/SKILL.md),
 with repository-state verification and chat, clipboard, and temporary-file output.
+
+The walkthrough skill follows the linear walkthrough pattern in [Simon Willison's Agentic
+Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/linear-walkthroughs/).
 The [upstream MIT notice](skills/productivity/handoff/THIRD_PARTY_NOTICES.md) is included.
 
 The repository layout follows [mattpocock/skills](https://github.com/mattpocock/skills).
