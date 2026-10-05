@@ -84,6 +84,11 @@ npx skills@latest update
   owns, in what order) and the start signal; each agent reads back its part; and a break message
   corrects mismatches, credits specific work and starts the play. Harness-neutral, with a short
   section for Herdr.
+- **[orchestrator](skills/productivity/orchestrator/SKILL.md)**: Take over and run a Herdr space
+  of named agent sessions as its orchestrator. It discovers the roster, maps ownership by path
+  and proposes the handoff before touching anything, then routes work through inboxes, watches
+  each agent's context and compacts at task boundaries, and reviews and lands work by path.
+  Herdr only.
 - **[summarize](skills/productivity/summarize/SKILL.md)**: Summarize a document, plan, diff or
   thread in plain English with full coverage, for a reader who did not watch the work.
 

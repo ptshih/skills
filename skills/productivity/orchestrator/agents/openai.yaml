@@ -1,0 +1,3 @@
+interface:
+  display_name: "Orchestrator"
+  short_description: "Run a Herdr space of agent sessions"
