@@ -1,0 +1,3 @@
+interface:
+  display_name: "Commit Artisan"
+  short_description: "Split changes into atomic commits"

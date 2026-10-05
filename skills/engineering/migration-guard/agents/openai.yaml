@@ -1,0 +1,3 @@
+interface:
+  display_name: "Migration Guard"
+  short_description: "Make schema migrations safe and reversible"

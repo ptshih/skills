@@ -1,0 +1,3 @@
+interface:
+  display_name: "Dep Auditor"
+  short_description: "Vet new dependencies before adding them"

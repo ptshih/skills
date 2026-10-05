@@ -1,0 +1,3 @@
+interface:
+  display_name: "Type Tightener"
+  short_description: "Replace loose types with strict ones"

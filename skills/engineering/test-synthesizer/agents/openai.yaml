@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Synthesizer"
+  short_description: "Add boundary and adversarial tests"
