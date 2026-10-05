@@ -242,6 +242,20 @@ whether the product can live without the machinery. Seen 2026-10-05: a deadline
 added in one fix round raced the commit it guarded; removing it, and saying plainly what a
 stopped run leaves behind, ended the loop that repairing it would have continued.
 
+Order a multi-commit assignment so the part that stands alone comes first, and ask the
+builder for a message at that commit. The reviewer reads it from a snapshot while the builder
+continues, and it can land by itself if the rest stalls.
+
+A check that fails in the main checkout right after a fast-forward may be the checkout, not
+the change: its installed packages go stale while agents install only in their worktrees.
+Compare the error with the lockfile before blaming the change, and do not reinstall under the
+user's running dev server. Seen 2026-10-05: a missing test dependency failed the type check
+and five test files on a tree that had passed in two fresh worktrees.
+
+When your own shell refuses a check (a safety rule that cannot parse the script), do not
+rephrase it to get through. The reviewer's run is the independent evidence, and your report
+says you did not run it.
+
 ## 8. Reporting to the user
 
 Routine updates: one to three lines. Anything the user decides on: plain English,
@@ -253,6 +267,14 @@ To show the user a builder's screens, copy the screenshots to a stable folder an
 them. A path inside another session's scratchpad is not something they can use, and a
 signed-in local preview needs a session cookie that would replace their own, because browsers
 share localhost cookies across ports.
+
+For a live look, have the builder run a small local proxy on its own port that adds a
+synthetic account's session to each request: the user opens that address and their own
+browser needs no cookie. Give them screenshots as well, in case the preview is stopped.
+
+A breakpoint on width alone also catches a phone turned on its side. When a handoff
+names one, ask what a short screen gets (a sideways phone, a tablet with its keyboard up)
+before the build, and put those sizes in the builder's preview checks.
 
 When the user may be away, do not open the question tool: it blocks the session until
 someone answers. Decide what is yours, carry on with what does not depend on the answer,
