@@ -77,6 +77,8 @@ harness's way of running agents in parallel:
 - The exact file list to review (8-12 files max per agent)
 - A checklist of what to check (from the lists above)
 - Instruction: "Report findings as a structured list with file:line references"
+- Instruction: "Read only: do not edit, and do not run tests, builds, dev servers, migrations
+  or anything else that writes files or reaches a database"
 
 ### 4. Consolidate into severity table
 
@@ -108,11 +110,13 @@ works in any harness and lets the user watch them:
 
 1. Write each reviewer's brief (step 3) to a file.
 2. Per reviewer, open a tab at the repository root and start a read-only session (Claude Code
-   `--permission-mode plan`, Codex `--sandbox read-only`):
+   `--permission-mode plan --disallowedTools "Bash Edit Write NotebookEdit"`, since plan mode
+   alone still runs commands; Codex `--sandbox read-only`; Pi `--tools read,grep,find,ls`):
    `herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo root> --label <lens>-review --no-focus`,
    then `herdr agent start <name> --kind <claude|codex|pi> --pane <root pane> -- <read-only flags>`.
    Read the screen for an empty prompt and no dialog, then send one line naming the brief and
-   asking for the findings as the final reply: `herdr agent prompt <name> "<line>"`.
+   asking for the findings as the final reply: `herdr agent prompt <name> "<line>" --wait
+   --until working --timeout 30000`, so the wait below cannot settle before it starts.
 3. Wait for all three with `wait-all-idle.sh` from the orchestrator skill's "Take over", read
    each report with `herdr agent read <name> --source recent-unwrapped`, then consolidate.
 4. Exit each session with `herdr agent send-keys <name> ctrl+c ctrl+c` and close its tab.
