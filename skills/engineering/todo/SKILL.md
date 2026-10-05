@@ -149,6 +149,11 @@ Narrower asks reuse the same tables:
 
 ## Adding
 
+Add an item only when the user asked for it. An item you think of during other
+work is proposed, not written: give its headline and context in your reply, and
+leave TODO.md untouched until the user says go. An uncommitted edit to the shared
+file would stop every other session from landing backlog changes (Landing).
+
 1. **Is it already here?** Grep TODO.md for the work's key nouns first. If an
    item covers it, update that item instead — a second id for one outcome
    splits its history and its blockers.
@@ -305,8 +310,8 @@ Read the diff. If it contains an item you did not touch, that is another
 session's — leave the file for its owner and say so. Otherwise, when the user
 asked for this backlog change (a `/todo` request to add, update, close, drop or
 groom is that ask), commit it by explicit path (`git commit TODO.md -m "…"`),
-never `git add -A`. A backlog edit made on your own initiative during other work
-stays uncommitted: name it in your reply for the user to approve. If the repo has
+never `git add -A`. A backlog edit nobody asked for is never written in the first
+place (Adding), so TODO.md never waits on an approval. If the repo has
 a landing skill, it is the full ritual when this rides along with code.
 
 **Subjects name the item**, so `git log --grep` is its whole history. A commit
