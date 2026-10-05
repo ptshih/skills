@@ -1,6 +1,6 @@
 ---
 name: orchestrator
-description: Take over and run a Herdr space of named agent sessions as its orchestrator — discover the roster, map ownership, hand coordination over, route work through inboxes, watch context and compact, land by path. Use when the founder asks a session to orchestrate or coordinate the agents in a Herdr space, or starts a new orchestrator session.
+description: Take over and run a Herdr space of named agent sessions as its orchestrator — discover the roster, map ownership, hand coordination over, route work through inboxes, watch context and compact, land by path. Use when the user asks a session to orchestrate or coordinate the agents in a Herdr space, or starts a new orchestrator session.
 ---
 
 # Orchestrator
@@ -12,7 +12,7 @@ of five agents on 2026-09-30 (deck, site, qa, workhorse, harness).
 ## 1. Preconditions
 
 - `test "${HERDR_ENV:-}" = 1`, or say you are outside Herdr and stop.
-- Name this session so peers can address it: `/rename <project>-orchestrator` (the founder
+- Name this session so peers can address it: `/rename <project>-orchestrator` (the user
   types it, or asks for it). `ListAgents` then shows the name on its first line. Session
   names are machine-wide: a bare `orchestrator` collides with another project's (seen
   2026-10-01, on two projects).
@@ -28,7 +28,7 @@ herdr tab list        # tab labels are the roles (deck, site, qa, workhorse, har
 
 Then `ListAgents` for the message addresses. A Claude session's address is its `/rename`
 or `--name` name; an unnamed one shows as `<dir>-<xx>`. Match unnamed rows to panes from
-context (another agent's "sent to <project>-0d" line, start times, cwd), or ask the founder
+context (another agent's "sent to <project>-0d" line, start times, cwd), or ask the user
 to `/rename` each tab to its label. Codex panes never appear in `ListAgents`.
 
 Per agent, read the visible screen (`--lines` fails while an agent is working):
@@ -49,23 +49,23 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
 1. A table: tab, address, model and context used, doing now, should own.
 2. The rules: handoff first (one coordinator; the interim coordinator returns to its
    specialty); one writer per path, changes to another's file go to its owner as a
-   message; inboxes, not pane typing; one lander, the founder pushes; no polling, agents
+   message; inboxes, not pane typing; one lander, the user pushes; no polling, agents
    report when done; idle agents stay idle until a well-specified job exists.
-3. The decisions only the founder owns (go on the handoff, push timing, open calls).
+3. The decisions only the user owns (go on the handoff, push timing, open calls).
 4. Flags: unowned uncommitted files, near-full contexts, pending harness updates.
 
 ## 4. Take over
 
-1. **Wait for idle** unless the founder exempts an agent.
+1. **Wait for idle** unless the user exempts an agent.
    `${CLAUDE_SKILL_DIR}/scripts/wait-all-idle.sh <pane>…` polls `herdr agent get` and blocks
    on `herdr agent wait`; run it in the background and act when it prints `ALL_SETTLED`.
-   `blocked` means a dialog is open: stop and tell the founder.
+   `blocked` means a dialog is open: stop and tell the user.
 2. **Compact the fullest agent first** (section 6), with the handoff in its keep-list.
 3. **Send the handoff** to each Claude agent with `SendMessage`. First line
    self-contained. Body: who coordinates now, its ownership by path, report to this
    session's name, do not commit, no pushes, SendMessage only, and two or three status
    questions (uncommitted files with commit ids, open findings, what it waits on).
-4. **First tasks** go out in the same message when the founder has given them.
+4. **First tasks** go out in the same message when the user has given them.
 5. Record the roster, addresses and protocol in memory: sessions restart.
 6. **Huddle** with the huddle skill once the handoffs are acknowledged, and again whenever a
    goal starts, the phase changes (build, review, land), a setback lands or agents drift or
@@ -76,7 +76,7 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
 - **Claude → Claude:** `SendMessage`. A message is plain text; a `/command` inside it never
   runs, and `@path` attaches nothing. Send the text itself or name an absolute path.
 - **Commands to a Claude session** (`/compact`, `/clear`): only by pane, only when the
-  founder asked or the founder's rules allow it, only after reading the pane shows an
+  user asked or the user's rules allow it, only after reading the pane shows an
   empty prompt and no dialog:
   `herdr agent prompt <pane> '/compact <keep-list>' --wait --timeout 300000`. Keep the
   text on one line and under about 500 characters: a longer paste collapses into a
@@ -118,9 +118,9 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   own shell first. It addresses you by name: after a `/rename` tell the Codex session the
   new name, and give it the `[ref]` when another session shares that name (seen
   2026-10-01, where two sessions were both `orchestrator`).
-- **A new Codex worker** (only after the founder confirms it): `herdr tab create --workspace
+- **A new Codex worker** (only after the user confirms it): `herdr tab create --workspace
   <ws> --cwd <worktree> --label <name> --no-focus`, then `herdr agent start <name> --kind
-  codex --pane <root pane> -- <the flags the founder's own Codex sessions run with>`. Read
+  codex --pane <root pane> -- <the flags the user's own Codex sessions run with>`. Read
   the screen for the model, an empty prompt and no dialog, prompt once with one line that
   names an absolute assignment file, and arm `herdr agent wait <name>` in the background.
   The fsd skill's `references/herdr.md` has the full procedure (used 2026-10-01).
@@ -134,7 +134,7 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   matched by `cwd`.
 - Before the first prompt to a Codex worker, read its footer for the model: a repo's
   `.codex/config.toml` can pin a different model than `~/.codex/config.toml`, so pass
-  `-m <model>` when the founder named one (seen 2026-10-02: the repo pinned one model and the founder asked for another).
+  `-m <model>` when the user named one (seen 2026-10-02: the repo pinned one model and the user asked for another).
 - A worker stops at the deadline in its first brief. Every follow-up brief states a new
   deadline and says the earlier one no longer applies, or the worker reads it and stops.
 - Arm one background wait per worker (`herdr agent wait` in a loop that re-checks status);
@@ -173,22 +173,22 @@ busy and costs them nothing.
   Seen 2026-10-05: a researcher at 42% used was given a full removal map, ran out
   mid-task and compacted itself, which is the one moment nobody chooses the keep-list.
 - Before compacting, message the agent to run the `refine` skill and reply with its
-  `Memory:` and `Skill:` lines; compact once it is idle again. The founder's rule is refine
+  `Memory:` and `Skill:` lines; compact once it is idle again. The user's rule is refine
   before compaction, and an agent compacted from outside gets no other chance.
 - The keep-list names: its ownership by path, what is committed and unpushed, the
-  in-flight change and its state, open founder decisions, the messaging protocol.
+  in-flight change and its state, open user decisions, the messaging protocol.
   End with "Drop tool output and file dumps."
 - `/clear` only when a role is finished and a fresh brief is ready to send; it starts a
   new conversation and the agent forgets everything but project memory.
-- An "Update installed · Restart to update" banner is the founder's restart, never yours.
+- An "Update installed · Restart to update" banner is the user's restart, never yours.
 
 ## 7. Landing and pushing
 
 One lander, you. Commit by explicit path with the repo's ship procedure after the owner
 reports its checks; never stage another agent's file into someone else's commit. A
-shared checkout has one index, so two agents committing at once collide. The founder
+shared checkout has one index, so two agents committing at once collide. The user
 pushes; a `main` push may deploy. Deferred findings become proposed backlog items in your report, not silence;
-they go into the backlog when the founder says go.
+they go into the backlog when the user says go.
 
 Before landing, a fresh read-only reviewer reads the change. While it reads, the builder
 holds its edits; afterwards send one fix list as a file: the findings with their line
@@ -204,8 +204,8 @@ them. A branch cut before a repo-wide change (a fence, a rename) can bring a fil
 it: grep for stragglers after the merge. For a small fix after a second review, read the diff
 yourself; resuming a reviewer costs its whole context again.
 
-Design documents for the founder (a spec, a decisions list, a proof) get a fresh skeptic
-reader before he sees them, who re-runs the proof and attacks it, then the author revises and
+Design documents for the user (a spec, a decisions list, a proof) get a fresh skeptic
+reader before they see them, who re-runs the proof and attacks it, then the author revises and
 keeps the first version beside it. A finding a buyer or a model could turn on (lexical checks,
 for example) gets a reachability check before it is ranked.
 
@@ -242,18 +242,18 @@ whether the product can live without the machinery. Seen 2026-10-05: a deadline
 added in one fix round raced the commit it guarded; removing it, and saying plainly what a
 stopped run leaves behind, ended the loop that repairing it would have continued.
 
-## 8. Reporting to the founder
+## 8. Reporting to the user
 
-Routine updates: one to three lines. Anything the founder decides on: plain English,
+Routine updates: one to three lines. Anything the user decides on: plain English,
 a table for parallel items, decisions called out. Report outcomes with exit codes and
-what was not verified, then the calibrated confidence line the founder expects.
-Relay a peer's report in your words; the founder did not see the message.
+what was not verified, then the calibrated confidence line the user expects.
+Relay a peer's report in your words; the user did not see the message.
 
-To show the founder a builder's screens, copy the screenshots to a stable folder and open
-them for him. A path inside another session's scratchpad is not something he can use, and a
-signed-in local preview needs a session cookie that would replace his own, because browsers
+To show the user a builder's screens, copy the screenshots to a stable folder and open
+them. A path inside another session's scratchpad is not something they can use, and a
+signed-in local preview needs a session cookie that would replace their own, because browsers
 share localhost cookies across ports.
 
-When the founder may be away, do not open the question tool: it blocks the session until
+When the user may be away, do not open the question tool: it blocks the session until
 someone answers. Decide what is yours, carry on with what does not depend on the answer,
-and keep the founder's decisions in one list for their return.
+and keep the user's decisions in one list for their return.
