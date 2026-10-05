@@ -31,10 +31,15 @@ Do it when the user says yes, or asked for a new session up front:
 
 1. Open a tab at the repository root without taking focus, and keep the returned root pane:
    `herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo root> --label <name> --no-focus`.
-2. Start the harness the user named, or this session's own, with this session's flags (read
-   them with `herdr pane process-info --pane "$HERDR_PANE_ID"`, leaving out `--resume`,
-   `--continue` and `--name`): `herdr agent start <name> --kind <claude|codex|pi> --pane
-   <root pane> -- <flags>`, plus `--name <name>` for Claude Code so its inbox answers to it.
+2. Start the harness the user named, or this session's own. For the same harness, use this
+   session's flags (`herdr pane process-info --pane "$HERDR_PANE_ID"`, leaving out
+   `--resume`, `--continue` and `--name`); for another harness, its flags never carry over:
+   read them from one of the user's running sessions of that harness (`herdr agent list`, then
+   `process-info` on its pane), or ask. `process-info` shows flags a shell alias added, and
+   `agent start` types through the same shell, so leave out what `herdr pane run <root pane>
+   'alias <harness>'` shows (read it with `herdr pane read`). Then `herdr agent start <name> --kind
+   <claude|codex|pi> --pane <root pane> -- <flags>`, plus `--name <name>` for Claude Code so
+   its inbox answers to it.
    Names match `[a-z][a-z0-9_-]{0,31}`.
 3. Read the screen before any input (`herdr agent read <name> --source visible`). Answer a
    folder-trust dialog only for the user's own repository, after reading back the selected
