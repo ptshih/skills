@@ -27,6 +27,10 @@ and still works without it; a skill with no other agents or sessions in its job 
 the few Herdr commands a skill runs itself; for the longer procedures (roster, routing, waits,
 compaction), point to the orchestrator skill's sections by title rather than copying them.
 
+This repository is public. A skill names no private project, person, employer or account, and
+it addresses "the user". A lesson learned in real work keeps its date and drops the project's
+name: "Seen 2026-10-05: …", never "On <project> …".
+
 The install command is `npx skills@latest add ptshih/skills -g --skill <name>`, and
 `npx skills@latest update` updates it. Say it that way everywhere.
 
