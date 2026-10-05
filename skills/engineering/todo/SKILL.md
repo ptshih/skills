@@ -60,7 +60,9 @@ screens, an export — is a section wearing a checkbox.
 ⚠ **Sections are TOPICS, not areas, and a section's preamble is shared context
 for every item beneath it.** Read the preamble before acting on an item, and
 file a new item under the section whose preamble already applies. Area lives
-in the item's metadata precisely so grouping by topic stays free.
+in the item's metadata precisely so grouping by topic stays free. A repo whose
+TODO.md header says otherwise (sections by area, each item's context in a note
+it links to) follows its header: read the linked note before acting.
 
 Ids only mean an id **at the start of a line**, right after the checkbox —
 every command below anchors with `^`.
@@ -300,8 +302,11 @@ git diff TODO.md
 ```
 
 Read the diff. If it contains an item you did not touch, that is another
-session's — leave the file for its owner and say so. Otherwise commit it by
-explicit path (`git commit TODO.md -m "…"`), never `git add -A`. If the repo has
+session's — leave the file for its owner and say so. Otherwise, when the user
+asked for this backlog change (a `/todo` request to add, update, close, drop or
+groom is that ask), commit it by explicit path (`git commit TODO.md -m "…"`),
+never `git add -A`. A backlog edit made on your own initiative during other work
+stays uncommitted: name it in your reply for the user to approve. If the repo has
 a landing skill, it is the full ritual when this rides along with code.
 
 **Subjects name the item**, so `git log --grep` is its whole history. A commit
