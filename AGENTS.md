@@ -21,6 +21,12 @@ agent can reach for them. A user-invoked skill, reachable only by typing its nam
 `disable-model-invocation: true` in its frontmatter and `policy.allow_implicit_invocation:
 false` in its `agents/openai.yaml`.
 
+Skills work in any harness (Claude Code, Codex, Pi) and favor Herdr where it helps. A skill whose
+job involves other agents or sessions adds an `On Herdr` section, used when `HERDR_ENV` is `1`,
+and still works without it; a skill with no other agents or sessions in its job gets none. Name
+the few Herdr commands a skill runs itself; for the longer procedures (roster, routing, waits,
+compaction), point to the orchestrator skill's sections by title rather than copying them.
+
 The install command is `npx skills@latest add ptshih/skills -g --skill <name>`, and
 `npx skills@latest update` updates it. Say it that way everywhere.
 
