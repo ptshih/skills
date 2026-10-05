@@ -20,6 +20,12 @@ npx skills@latest update
 
 ### Model-invoked
 
+- **[lean-build](skills/engineering/lean-build/SKILL.md)**: Build feature work with a high risk of
+  overbuilding: derive acceptance and non-goals, deliver one narrow end-to-end path, leave out
+  speculative options, and stop when acceptance passes.
+- **[tdd](skills/engineering/tdd/SKILL.md)**: Test-driven development as a red-green loop: tests
+  through agreed seams, one test then one minimal implementation per cycle, and the
+  anti-patterns that make tests worthless.
 - **[todo](skills/engineering/todo/SKILL.md)**: Work a repo's engineering backlog in `TODO.md`:
   show what is open as ready, needs-your-call and blocked tables, add, work, update and close
   items, and groom the file for stale content and a backlog you can hold in your head. Each
@@ -33,6 +39,9 @@ npx skills@latest update
 
 ### Model-invoked
 
+- **[find-skills](skills/productivity/find-skills/SKILL.md)**: Find and install agent skills when
+  asked for one. It installs only a skill the user approves by name, then reads it and reports
+  what it can run.
 - **[handoff](skills/productivity/handoff/SKILL.md)**: Summarize the current session so a fresh
   agent can continue. It prints the handoff in chat, copies the same text to the clipboard, and
   saves a temporary Markdown file with a clickable path. Clipboard copying uses `pbcopy` on
@@ -46,6 +55,15 @@ with repository-state verification and chat, clipboard, and temporary-file outpu
 The walkthrough skill follows the linear walkthrough pattern in [Simon Willison's Agentic
 Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/linear-walkthroughs/).
 The [upstream MIT notice](skills/productivity/handoff/THIRD_PARTY_NOTICES.md) is included.
+
+The tdd skill is adapted from [Matt Pocock's tdd skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md)
+([MIT notice](skills/engineering/tdd/THIRD_PARTY_NOTICES.md)).
+
+The lean-build skill is adapted from [Caveman's lean-build skill](https://github.com/JuliusBrussee/caveman/blob/main/skills/lean-build/SKILL.md)
+([Apache-2.0 and MIT notices](skills/engineering/lean-build/THIRD_PARTY_NOTICES.md)).
+
+The find-skills skill is adapted from [Vercel's find-skills skill](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md)
+([MIT notice](skills/productivity/find-skills/THIRD_PARTY_NOTICES.md)).
 
 The repository layout follows [mattpocock/skills](https://github.com/mattpocock/skills).
 
