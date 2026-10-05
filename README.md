@@ -46,6 +46,11 @@ npx skills@latest update
   agent can continue. It prints the handoff in chat, copies the same text to the clipboard, and
   saves a temporary Markdown file with a clickable path. Clipboard copying uses `pbcopy` on
   macOS; if it fails, the agent reports the failure and still provides the chat output and file.
+- **[huddle](skills/productivity/huddle/SKILL.md)**: Get a team of agents on the same play in one
+  short exchange. The orchestrator sends the situation, the play (who does what, which paths each
+  owns, in what order) and the start signal; each agent reads back its part; and a break message
+  corrects mismatches, credits specific work and starts the play. Harness-neutral, with a short
+  section for Herdr.
 
 ## Attribution
 

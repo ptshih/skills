@@ -8,3 +8,4 @@ Model- or user-reachable: type `/<name>`, or the agent reaches for it when the r
 
 - **[find-skills](./find-skills/SKILL.md)**: Find and install agent skills when asked for one, installing only a skill the user approves by name.
 - **[handoff](./handoff/SKILL.md)**: Summarize the current session so a fresh agent can continue, in chat, on the clipboard and in a temporary Markdown file.
+- **[huddle](./huddle/SKILL.md)**: Get a team of agents on the same play in one short exchange: the orchestrator calls the play, each agent reads back its part, and a break message corrects mismatches, credits specific work and starts the play.
