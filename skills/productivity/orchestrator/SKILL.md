@@ -81,7 +81,10 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   `herdr agent prompt <pane> '/compact <keep-list>' --wait --timeout 300000`. Keep the
   text on one line and under about 500 characters: a longer paste collapses into a
   "[Pasted text]" placeholder and the command is not recognized, so the agent answers it
-  as a message instead (seen 2026-09-30). Verify afterwards: the screen shows `Compacted`;
+  as a message instead (seen 2026-09-30). A harness notice above the prompt with numbered
+  choices (a "Heads up" line, a survey, an update question) is an open dialog even when the
+  status is `done`: do not type, send the work through the inbox uncompacted, and tell the
+  user what the notice says (seen 2026-10-06). Verify afterwards: the screen shows `Compacted`;
   if not, resend shorter. The footer and `ctx.sh` keep the old figure until the
   agent's next turn, so neither is the receipt.
 - **Claude → Codex:** `codex queue --thread <uuid-or-name> --message <text>` when the
@@ -150,6 +153,11 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   delivery; a sent message is not a read one.
 - Never ask a peer to do what your session was denied.
 
+A Claude prompt box can show a dim suggestion of the next input (often your own last
+`/compact`) that a plain read cannot tell from typed text. Read the pane with
+`herdr agent read <pane> --source visible --ansi`: text wrapped in the faint code (`ESC[2m`)
+is a suggestion and the box is empty; anything else is someone's unsent input, so do not type.
+
 ## 6. Context watch and compaction
 
 Part of the job: check every agent's context at each report and before each new
@@ -181,6 +189,11 @@ busy and costs them nothing.
 - `/clear` only when a role is finished and a fresh brief is ready to send; it starts a
   new conversation and the agent forgets everything but project memory.
 - An "Update installed · Restart to update" banner is the user's restart, never yours.
+- Check a worker's context in its own step before the send. Reading the footer in the same
+  command that queues the assignment is not a check. Seen 2026-10-06: a reviewer was twice
+  handed a large review with about a third of its context left.
+- A pane scrolled into its transcript ("Earlier messages available", "Back to bottom") is not
+  at an empty prompt. Do not type into it; a Codex session compacts itself when it must.
 
 ## 7. Landing and pushing
 
@@ -256,6 +269,46 @@ When your own shell refuses a check (a safety rule that cannot parse the script)
 rephrase it to get through. The reviewer's run is the independent evidence, and your report
 says you did not run it.
 
+When main has moved since a branch was cut (another landing, a backlog commit), it no
+longer fast-forwards. Apply its commits with `git cherry-pick <base>..<head>`, which keeps
+each one, and prove the result on the paths the branch owns:
+`git diff --quiet HEAD <head> -- <those paths>`. A branch stacked on an unlanded one lands the
+same way after its base.
+
+A preview serves whatever was last built in its worktree. While a designer, a reviewer or
+you are checking one, tell the builder to hold: no branch switch and no build there until
+the checks are done.
+
+Arm the wait in the same turn as the send, every time, and for a reviewer too. Seen
+2026-10-05: a review finished and sat unread for three hours because its send went out
+without one, while a later assignment to the builder was built on the unreviewed branch.
+
+A hosting variable marked sensitive cannot be read back: `vercel env pull` writes
+`[SENSITIVE]` for it, so "change one word" means re-entering the whole value with
+`vercel env update <name> production` from stdin, and only from a source you can trust for
+the full value. `vercel redeploy <deployment> --target production --non-interactive` then
+applies it without a push, and the earlier deployment keeps the old value for a rollback.
+
+On a landing that later landings build on (a schema, a wire shape), ask the builder for a
+written proposal before any code, and have the reviewer read it against the specification.
+Seen 2026-10-06: three schema defects were found before a migration existed. Give a
+specification the same treatment: each of three outside reads of one found real defects.
+
+Deleting a directory deletes its `.gitignore` too. After landing a removal, run `git status`
+in the main checkout: untracked leftovers the ignore file was hiding (once, a token file from
+a live run) reappear and can be staged by accident.
+
+A migration file does not change after it is applied. A wording fix a reviewer asks for goes
+in before the landing, and the hash to expect in the journal changes with it: recompute it.
+
+To apply a migration around a scheduled job, take a read-only baseline, wait until the job's
+lease has cleared, apply, and compare with the baseline. Explain every count that moved before
+calling it clean (once, a row the job itself wrote seconds earlier).
+
+When you replace a section of a shared backlog file by slicing between two headings, list the
+items filed there first. Seen 2026-10-06: an open item that lived under the heading was
+deleted with the section and had to be restored in the next commit.
+
 ## 8. Reporting to the user
 
 Routine updates: one to three lines. Anything the user decides on: plain English,
@@ -275,6 +328,17 @@ browser needs no cookie. Give them screenshots as well, in case the preview is s
 A breakpoint on width alone also catches a phone turned on its side. When a handoff
 names one, ask what a short screen gets (a sideways phone, a tablet with its keyboard up)
 before the build, and put those sizes in the builder's preview checks.
+
+Before designing what a product should notice, ask how that thing reaches the user today,
+and on their word take a counts-only read of their real account. Seen 2026-10-06: one answer
+("team requests and posts in a channel, never by name") and one probe (13 waiting, 10 of them
+over a month old) each overturned a rule already written into a specification.
+
+A user answering from a phone cannot open a local path. Publish rendered options as a private
+page and give the link, with one line per choice and the recommendation marked.
+
+Take every time you write into a state file from `date`. An estimated clock drifted two hours
+in one working day.
 
 When the user may be away, do not open the question tool: it blocks the session until
 someone answers. Decide what is yours, carry on with what does not depend on the answer,
