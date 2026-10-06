@@ -50,17 +50,12 @@ npx skills@latest update
 - **[tdd](skills/engineering/tdd/SKILL.md)**: Test-driven development as a red-green loop: tests
   through agreed seams, one test then one minimal implementation per cycle, and the
   anti-patterns that make tests worthless.
-- **[test-synthesizer](skills/engineering/test-synthesizer/SKILL.md)**: Add the boundary and
-  adversarial test cases a happy-path suite misses, chosen from the inputs the code really accepts.
 - **[todo](skills/engineering/todo/SKILL.md)**: Work a repo's engineering backlog in `TODO.md`:
   show what is open as ready, needs-your-call and blocked tables, add, work, update and close
   items, and groom the file for stale content and a backlog you can hold in your head. Each
   repo's `TODO.md` header declares its own areas and gate tags.
 - **[type-tightener](skills/engineering/type-tightener/SKILL.md)**: Replace `any`, unchecked casts
   and ignore directives with strict types, schemas and discriminated unions, then typecheck.
-- **[ui-craft](skills/engineering/ui-craft/SKILL.md)**: Build polished, accessible web UI from the
-  project's own design system, with spacing, color, interaction-state and accessibility defaults
-  when it has none.
 - **[walkthrough](skills/engineering/walkthrough/SKILL.md)**: Write a linear walkthrough of a
   change, feature or module in execution order. Every code excerpt comes from a command such as
   `sed -n` or `git show`, never retyped, and the result is saved to a private temporary
