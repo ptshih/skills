@@ -63,6 +63,14 @@ npx skills@latest update
 
 ## Productivity
 
+### User-invoked
+
+- **[retro](skills/productivity/retro/SKILL.md)**: Review a coding session, the current one or a
+  named one, for what in the agent's setup slowed it down or let mistakes through: missing
+  pointers, checks and guardrails, bloated or no-op instructions, costly tool calls, missing
+  information, unused skills and tools, and checks that catch little. It proposes numbered
+  changes with evidence and applies only the ones the user picks.
+
 ### Model-invoked
 
 - **[find-skills](skills/productivity/find-skills/SKILL.md)**: Find and install agent skills when
@@ -104,6 +112,9 @@ The lean-build skill is adapted from [Caveman's lean-build skill](https://github
 
 The find-skills skill is adapted from [Vercel's find-skills skill](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md)
 ([MIT notice](skills/productivity/find-skills/THIRD_PARTY_NOTICES.md)).
+
+The retro skill is adapted from [Matt Pocock's retro skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/retro/SKILL.md)
+([MIT notice](skills/productivity/retro/THIRD_PARTY_NOTICES.md)).
 
 The repository layout follows [mattpocock/skills](https://github.com/mattpocock/skills).
 

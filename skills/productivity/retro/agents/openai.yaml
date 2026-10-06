@@ -1,0 +1,5 @@
+interface:
+  display_name: "Retro"
+  short_description: "Review a session and improve the agent's setup"
+policy:
+  allow_implicit_invocation: false

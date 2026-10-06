@@ -2,6 +2,12 @@
 
 General workflow tools, not code-specific.
 
+## User-invoked
+
+Reachable only by typing its name, such as `/retro`; the agent never starts it on its own.
+
+- **[retro](./retro/SKILL.md)**: Review a coding session for what in the agent's setup slowed it down or let mistakes through, propose numbered changes with evidence, and apply only the ones the user picks.
+
 ## Model-invoked
 
 Model- or user-reachable: type `/<name>`, or the agent reaches for it when the request matches.
