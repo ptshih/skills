@@ -192,8 +192,9 @@ busy and costs them nothing.
 - Check a worker's context in its own step before the send. Reading the footer in the same
   command that queues the assignment is not a check. Seen 2026-10-06: a reviewer was twice
   handed a large review with about a third of its context left.
-- A pane scrolled into its transcript ("Earlier messages available", "Back to bottom") is not
-  at an empty prompt. Do not type into it; a Codex session compacts itself when it must.
+- A Codex pane showing "New activity · Earlier messages available" is only its transcript
+  view; with the prompt line empty, `/compact` typed there worked every time (2026-10-06). A
+  Claude pane with a numbered harness notice is different: see section 5.
 
 ## 7. Landing and pushing
 
@@ -234,7 +235,15 @@ three reviewers passed a lock-timeout fix on a local Postgres; the hosted pooler
 the setting without an error, and `show lock_timeout` there answered `0`.
 
 A reviewer reads a detached snapshot of the builder's head (`git worktree add --detach`),
-so the builder never waits; move it with `git checkout --detach <new head>` for a re-check.
+so the builder never waits; move it with `git checkout --detach <new head>` for a re-check,
+which leaves the reviewer's untracked probe scripts in place so it re-runs them unchanged.
+Logic that reconciles reads over time (event identities, boundaries, "what was already
+seen") takes several rounds: on milton the reader went 8, 3, 1 and 0 findings, then its list
+4, 3, 2, 1 and 0. When a fix round adds a defect, have the builder write the rule as a table
+before touching code again; the next round shrank every time that was done.
+
+When the user says "land and push" before a verdict is in, hold the words, say so, and carry
+them out on a clean verdict without asking again; on any finding, come back instead.
 
 `secret-scrubber` reads only the uncommitted or staged diff: on a clean checkout it prints OK
 without scanning anything. For a branch that is already committed, copy the script beside a
