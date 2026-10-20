@@ -121,6 +121,17 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   own shell first. It addresses you by name: after a `/rename` tell the Codex session the
   new name, and give it the `[ref]` when another session shares that name (seen
   2026-10-01, where two sessions were both `orchestrator`).
+- **Any harness to any harness, when the user has `agent-mail`** (a mailbox script over
+  Herdr: per-pane boxes, each harness woken its own way):
+  `agent-mail send <pane> - <<'MSG'` … `MSG` reaches Codex through `codex queue`, a Claude
+  session running `agent-mail watch` through its box, and Antigravity or any other agent through
+  `herdr agent prompt --wait` once Herdr reports it settled; a busy one gets a background
+  deliverer, so the send never blocks. Each message ends with its reply command, so Codex and
+  Antigravity answer with no setup (seen 2026-10-19, a sandboxed Codex included). Start
+  `agent-mail watch` under the Monitor tool before the first send and re-arm it on Monitor's
+  30-minute expiry notice; without a watcher, replies are typed into your pane. Exit 3 means
+  the mail was left waiting; the box's `stalled/` holds mail an agent never started on. Address
+  by pane id: Herdr names clear when an agent is replaced. Claude to Claude stays on SendMessage.
 - **A new Codex worker** (only after the user confirms it): `herdr tab create --workspace
   <ws> --cwd <worktree> --label <name> --no-focus`, then `herdr agent start <name> --kind
   codex --pane <root pane> -- <the flags the user's own Codex sessions run with>`. Read
@@ -165,8 +176,9 @@ assignment. The pane footer's `Ctx Used` truncates when the pane is narrow, so r
 transcripts instead: `${CLAUDE_SKILL_DIR}/scripts/ctx.sh ~/.claude/projects/<dir>
 deck=<session-id> …` (in a harness that does not expand `${CLAUDE_SKILL_DIR}`, use the folder
 this file was loaded from), with
-session ids from `herdr agent list` (`.agent_session.value`). It works while agents are
-busy and costs them nothing.
+session ids from `herdr agent list` (`.agent_session.value`). It reads Claude transcripts and,
+for an id with none, the Codex session file (share used of its 258k window). It works while
+agents are busy and costs them nothing.
 
 - Compact when an agent is idle, above about 70%, and at a task boundary. Never
   mid-task, never while `working`.
@@ -192,6 +204,15 @@ busy and costs them nothing.
 - Check a worker's context in its own step before the send. Reading the footer in the same
   command that queues the assignment is not a check. Seen 2026-10-06: a reviewer was twice
   handed a large review with about a third of its context left.
+- **Antigravity** (`agy`, a 1M window) keeps its conversation in a protobuf SQLite file that
+  the script cannot read. At an empty prompt, run `/context` in its pane, a local command with
+  no model call: `herdr agent prompt <pane> '/context'` only opens the command menu, so follow
+  with `herdr agent send-keys <pane> enter`, read the overlay ("76.5k/1.0M tokens (7.3%)",
+  2026-10-19), then `send-keys <pane> esc`. `/compact` exists and runs the same way; whether it
+  takes a keep-list is unverified, so send the refine request and the keep-list as a message
+  first. Never send part of a command: `agent prompt` always presses Enter, which completed
+  `/compa` to `/compact` in the box (cleared with `send-keys <pane> ctrl+u`). Its `idle` is a
+  fallback (no matching rule in `herdr agent explain`), so read the pane before typing.
 - A Codex pane showing "New activity · Earlier messages available" is only its transcript
   view; with the prompt line empty, `/compact` typed there worked every time (2026-10-06). A
   Claude pane with a numbered harness notice is different: see section 5.
@@ -204,7 +225,11 @@ shared checkout has one index, so two agents committing at once collide. The use
 pushes; a `main` push may deploy. Deferred findings become proposed backlog items in your report, not silence;
 they go into the backlog when the user says go.
 
-Before landing, a fresh read-only reviewer reads the change. While it reads, the builder
+Before landing, a fresh read-only reviewer reads the change. Reviewers from other harnesses
+earn their cost. Seen 2026-10-19: Codex, Antigravity and a Claude session each found real
+defects in a messaging tool that the others missed, across three rounds (send races, stale locks, a stalled prompt filed
+as delivered). Send each reviewer the findings already known so it does not repeat them, and
+map a review of an older commit onto the current code before fixing. While it reads, the builder
 holds its edits; afterwards send one fix list as a file: the findings with their line
 numbers, plus your decisions on what the builder left open. Send a second fresh reviewer at
 fixes for data loss or secrets, and for any round after that resume that reviewer, so it
