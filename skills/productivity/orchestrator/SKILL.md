@@ -125,12 +125,13 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   Herdr: per-pane boxes, each harness woken its own way):
   `agent-mail send <pane> - <<'MSG'` … `MSG` reaches Codex through `codex queue`, a Claude
   session running `agent-mail watch` through its box, and Antigravity or any other agent through
-  `herdr agent prompt --wait` once Herdr reports it settled; a busy one gets a background
-  deliverer, so the send never blocks. Each message ends with its reply command, so Codex and
+  `herdr agent prompt --wait` when Herdr reports it settled at send time. It never types later:
+  mail for a busy or blocked agent waits (exit 3) and goes out with the next send that finds it
+  idle, since a late prompt could land on top of the user's typing (decided 2026-10-19). Each message ends with its reply command, so Codex and
   Antigravity answer with no setup (seen 2026-10-19, a sandboxed Codex included). Start
   `agent-mail watch` under the Monitor tool before the first send and re-arm it on Monitor's
-  30-minute expiry notice; without a watcher, replies are typed into your pane. Exit 3 means
-  the mail was left waiting; the box's `stalled/` holds mail an agent never started on. Address
+  30-minute expiry notice; without a watcher, replies are typed into your pane. The box's
+  `stalled/` holds mail an agent never started on. Address
   by pane id: Herdr names clear when an agent is replaced. Claude to Claude stays on SendMessage.
 - **A new Codex worker** (only after the user confirms it): `herdr tab create --workspace
   <ws> --cwd <worktree> --label <name> --no-focus`, then `herdr agent start <name> --kind
