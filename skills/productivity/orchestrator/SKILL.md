@@ -123,16 +123,20 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   2026-10-01, where two sessions were both `orchestrator`).
 - **Any harness to any harness, when the user has `agent-mail`** (a mailbox script over
   Herdr: per-pane boxes, each harness woken its own way):
-  `agent-mail send <pane> - <<'MSG'` … `MSG` reaches Codex through `codex queue`, a Claude
-  session running `agent-mail watch` through its box, and Antigravity or any other agent through
-  `herdr agent prompt --wait` when Herdr reports it settled at send time. It never types later:
-  mail for a busy or blocked agent waits (exit 3) and goes out with the next send that finds it
-  idle, since a late prompt could land on top of the user's typing (decided 2026-10-19). Each message ends with its reply command, so Codex and
-  Antigravity answer with no setup (seen 2026-10-19, a sandboxed Codex included). Start
-  `agent-mail watch` under the Monitor tool before the first send and re-arm it on Monitor's
-  30-minute expiry notice; without a watcher, replies are typed into your pane. The box's
-  `stalled/` holds mail an agent never started on. Address
-  by pane id: Herdr names clear when an agent is replaced. Claude to Claude stays on SendMessage.
+  `agent-mail send <pane> - <<'MSG'` … `MSG` reaches Codex through `codex queue`, an agent
+  running `agent-mail watch` through its box, and Antigravity or any other agent through
+  `herdr agent prompt --wait` when Herdr reports it settled at send time. It never types later,
+  since a late prompt could land on top of the user's typing (decided 2026-10-19). Exit 3 means
+  the mail waits, most often because the recipient was busy: deliver it with `agent-mail retry
+  <pane>` once that agent is idle, never by sending it again, which makes a copy. Each message
+  ends with its reply command, so Codex and Antigravity answer with no setup (seen 2026-10-19, a
+  sandboxed Codex included). The watcher is required in practice: start `agent-mail watch`
+  under the Monitor tool before the first send and re-arm it on Monitor's 30-minute expiry
+  notice, because a reply that reaches a busy orchestrator without one only waits in its box
+  until `agent-mail read`. Mail set aside in the box's `stalled/` (a prompt the agent may not
+  have received, mail for a replaced session) is never resent; `agent-mail read` prints it.
+  Address by pane id: Herdr names clear when an agent is replaced. Claude to Claude stays on
+  SendMessage.
 - **A new Codex worker** (only after the user confirms it): `herdr tab create --workspace
   <ws> --cwd <worktree> --label <name> --no-focus`, then `herdr agent start <name> --kind
   codex --pane <root pane> -- <the flags the user's own Codex sessions run with>`. Read
