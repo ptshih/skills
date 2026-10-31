@@ -73,6 +73,7 @@ npx skills@latest update
 
 ### Model-invoked
 
+- **[clippy](skills/productivity/clippy/SKILL.md)**: Copy tailored compaction instructions; use a preservation message followed by the native command when inline instructions are unsupported.
 - **[find-skills](skills/productivity/find-skills/SKILL.md)**: Find and install agent skills when
   asked for one. It installs only a skill the user approves by name, then reads it and reports
   what it can run.

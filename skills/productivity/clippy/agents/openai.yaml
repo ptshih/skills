@@ -1,0 +1,3 @@
+interface:
+  display_name: "Clippy"
+  short_description: "Copy tailored instructions before compaction"
