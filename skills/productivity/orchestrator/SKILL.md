@@ -9,6 +9,14 @@ You coordinate; the specialist sessions do the work. Your turns are the scarce r
 relay, decide, land, and keep your own context for decisions. Written from a takeover
 of five agents on 2026-09-30 (deck, site, qa, workhorse, harness).
 
+## Three persistent collaborators
+
+When the user adopts Lead, Brainstorm, and Designer with temporary builders and
+reviewers, read [the coordination pattern](references/three-role-team.md) at
+`${CLAUDE_SKILL_DIR}/references/three-role-team.md`. In harnesses that do not expand
+that variable, resolve it relative to this SKILL.md. Use the user's exact roster;
+this reference does not authorize spawning agents or publishing changes.
+
 ## 1. Preconditions
 
 - `test "${HERDR_ENV:-}" = 1`, or say you are outside Herdr and stop.
