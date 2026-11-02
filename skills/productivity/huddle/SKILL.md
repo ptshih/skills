@@ -1,6 +1,6 @@
 ---
 name: huddle
-description: Get every agent on a multi-agent team on the same page in one short exchange. The orchestrator sends one message with the situation, the play (who does what, which paths each owns, in what order) and the start signal; each agent reads back its part; then a break message corrects any mismatch, credits specific work and starts the play. Use when an orchestrator or lead agent kicks off a goal with several agents, changes phase (build, review, land), recovers from a setback, takes on a new or compacted teammate, or sees agents drift or collide, and when the user says "huddle", "huddle up", "call a play", "get everyone on the same page" or "rally the team".
+description: Align an existing authorized agent team when assignments conflict, ownership is unclear, or a restart needs shared agreement. Also use when the user requests a huddle or team alignment. Collect short read-backs and agree on a shared start.
 ---
 
 # Huddle
@@ -14,15 +14,13 @@ Keep it short: every agent carries the huddle in its context for the rest of the
 
 ## When to call one
 
-- A goal starts and more than one agent has a part.
-- The phase changes: build to review, review to land.
-- After a setback: a failed review, a reverted change, a broken build, a missed deadline.
-- The roster changes: an agent joins, is compacted or cleared, or coordination is handed over
-  (after the handoff message, not instead of it).
-- Agents drift or collide: two writers on one path, duplicated work, conflicting assumptions.
+- Assignments conflict: two writers on one path, duplicated work, or conflicting assumptions.
+- Ownership or dependencies are unclear across the existing team.
+- A restart after a setback or handover needs shared agreement before work resumes.
 - The user asks for one.
 
-One agent's next task is a brief to that agent, not a huddle.
+Routine kickoffs, phase changes and roster changes do not require a huddle. Brief one agent
+directly when only its next task changes. Work within the authorized team and task scope.
 
 ## 1. Check the play is yours to call
 
@@ -145,12 +143,14 @@ clean or what changed, and any decision waiting on the user.
 When the orchestrator skill is installed, take the mechanics from its sections instead of
 improvising:
 
-- At a takeover, the handoff from "Take over" goes first; the first huddle follows once the
-  agents have acknowledged it.
+- At a takeover that needs a huddle, the handoff from "Take over" goes first; huddle once
+  the agents have acknowledged it.
 - Roster and what each agent is doing: "Discover the roster".
 - Context check and compaction before the huddle: "Context watch and compaction".
 - Sending the huddle and the break: "Routing", through each session's inbox (`SendMessage` for
-  Claude, `codex queue` for Codex), typing into a pane only as its fallback.
+  Claude, `codex queue` for Codex). Codex has no pane fallback: leave failed delivery pending
+  and report it. For other harnesses only, pane input requires an unreachable inbox and a
+  freshly inspected empty prompt with no dialog.
 - Read-backs from Codex sessions: the report-file or relay routes in "Routing"; a Codex session
   cannot reply through `SendMessage`.
 - Waiting for every read-back: `wait-all-idle.sh` from "Take over", run in the background.

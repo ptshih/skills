@@ -39,14 +39,19 @@ Do it when the user says yes, or asked for a new session up front:
    `agent start` types through the same shell, so leave out what `herdr pane run <root pane>
    'alias <harness>'` shows (read it with `herdr pane read`). Then `herdr agent start <name> --kind
    <claude|codex|pi> --pane <root pane> -- <flags>`, plus `--name <name>` for Claude Code so
-   its inbox answers to it.
+   its inbox answers to it. For Codex, include `Read <absolute handoff path> and continue
+   from it.` as the CLI startup prompt argument; never type the assignment into its pane.
    Names match `[a-z][a-z0-9_-]{0,31}`.
 3. Read the screen before any input (`herdr agent read <name> --source visible`). Answer a
    folder-trust dialog only for the user's own repository, after reading back the selected
    choice.
-4. Send one line that names the file, not the handoff text, since a long paste collapses into
-   a placeholder: `herdr agent prompt <name> "Read <absolute path> and continue from it."
-   --wait --until working --timeout 20000`.
+4. Verify that the startup assignment began. Follow-ups go through the harness's inbox;
+   Codex uses `codex queue --thread <session id or name> --message <text>`. If its thread
+   is missing or delivery fails, leave the message pending and report it, with no pane
+   fallback. For other harnesses, send the handoff through their inbox; only when no inbox
+   is reachable and the screen shows an empty prompt with no dialog may you use
+   `herdr agent prompt <name> "Read <absolute path> and continue from it." --wait
+   --until working --timeout 20000`. See the orchestrator skill's "Routing" section.
 5. Tell the user the tab label and the agent name. Leave this session running.
 
 Adapted from [Matt Pocock's handoff skill](https://github.com/mattpocock/skills/blob/main/skills/productivity/handoff/SKILL.md).

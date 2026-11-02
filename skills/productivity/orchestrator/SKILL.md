@@ -9,6 +9,12 @@ You coordinate; the specialist sessions do the work. Your turns are the scarce r
 relay, decide, land, and keep your own context for decisions. Written from a takeover
 of five agents on 2026-09-30 (deck, site, qa, workhorse, harness).
 
+Write expected results to the agreed file; the coordinator reads it before dependent work.
+Use inboxes for authorized assignments, plan-changing decisions or blockers, and explicitly
+requested handoffs. No routine completion notices, acknowledgment loops, or reminders.
+Within an authorized team, give one-off work to temporary agents and keep persistent
+collaborators on their ongoing roles, unless the user assigns them the work directly.
+
 ## Three persistent collaborators
 
 When the user adopts Lead, Brainstorm, and Designer with temporary builders and
@@ -29,6 +35,8 @@ this reference does not authorize spawning agents or publishing changes.
   2026-10-01, on two projects).
 - Read the repo's `AGENTS.md` for STOP rules, dev-server ports, landing and push rules.
   Nothing here overrides them.
+- In Claude Code, read `~/.claude/orchestrator.md` if present for session-only harness
+  setup. Other harnesses skip it.
 
 ## 2. Discover the roster (read-only)
 
@@ -53,16 +61,20 @@ assignment text usually names paths), and who it reports to. Then the repo:
 `git status --short`, `git log --oneline origin/main..main`, `git worktree list`, and
 `lsof -nP -iTCP:<port> -sTCP:LISTEN` for each dev-server port.
 
-## 3. Propose before touching anything
+## 3. Establish the authorized scope
 
-Answer "do you accept?" with a plain-English proposal and wait for the go:
+When the user asks for a proposal, present it and wait. When the user has already asked you
+to take over, summarize the scope and proceed within the authorized roster and work. Ask only
+when missing intent materially affects the result; do not repeat settled approval questions.
+Cover:
 
 1. A table: tab, address, model and context used, doing now, should own.
 2. The rules: handoff first (one coordinator; the interim coordinator returns to its
    specialty); one writer per path, changes to another's file go to its owner as a
    message; inboxes, not pane typing; one lander, the user pushes; no polling, agents
-   report when done; idle agents stay idle until a well-specified job exists.
-3. The decisions only the user owns (go on the handoff, push timing, open calls).
+   write expected results to agreed reports; idle agents stay idle until a well-specified
+   job exists.
+3. Unresolved decisions only the user owns, including any unapproved work or publishing.
 4. Flags: unowned uncommitted files, near-full contexts, pending harness updates.
 
 ## 4. Take over
@@ -77,10 +89,9 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
    session's name, do not commit, no pushes, SendMessage only, and two or three status
    questions (uncommitted files with commit ids, open findings, what it waits on).
 4. **First tasks** go out in the same message when the user has given them.
-5. Record the roster, addresses and protocol in memory: sessions restart.
-6. **Huddle** with the huddle skill once the handoffs are acknowledged, and again whenever a
-   goal starts, the phase changes (build, review, land), a setback lands or agents drift or
-   collide: one play to everyone, a read-back from each, then the break.
+5. Keep the current roster, addresses and protocol in the task's handoff notes.
+6. **Huddle** only when assignments conflict, ownership is unclear, a restart needs shared
+   agreement, or the user requests it. Routine takeovers and phase changes need no huddle.
 
 ## 5. Routing
 
@@ -98,33 +109,38 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   user what the notice says (seen 2026-10-06). Verify afterwards: the screen shows `Compacted`;
   if not, resend shorter. The footer and `ctx.sh` keep the old figure until the
   agent's next turn, so neither is the receipt.
-- **Claude → Codex:** `codex queue --thread <uuid-or-name> --message <text>` when the
-  thread is known; otherwise `herdr agent prompt <pane> "$(cat <assignment-file>)"` at an
-  empty prompt. Confirm it started: `herdr agent wait <pane> --until working --timeout 20000`.
-  A Codex session with no turn yet has no thread: the queue answers
-  `No active session found matching '<name>'`, so its first message goes through the pane.
+- **Any harness → Codex:** messages and assignments are inbox-only. Use
+  `codex queue --thread <uuid-or-name> --message <text>` or `agent-mail`'s Codex queue route.
+  Never use `herdr agent prompt`, `send-keys`, pasted text or other prompt-box typing for
+  these messages, including first assignments and failed deliveries. If no thread exists
+  or queueing fails, leave the message pending and report it; there is no terminal fallback.
+  A new Codex worker can receive its initial brief as the CLI startup prompt argument.
+  Confirm it started: `herdr agent wait <pane> --until working --timeout 20000`.
+  A session with no turn yet may have no thread: the queue can answer
+  `No active session found matching '<name>'`; that is not permission to type into its pane.
   After that a name can still be refused with `Cannot verify a unique session label across
   server pages; matching session UUID: <uuid>`; that id works once the session file for it
   under `~/.codex/sessions` shows text only you sent (seen 2026-10-01).
 - **Codex → Codex orchestrator:** `codex queue --thread <coordinator UUID> --message <text>`.
   It works between existing Codex sessions, including while the coordinator is working.
-  Give peers the new UUID on takeover; their old Claude relay cannot reach the replacement.
-  A successful queue result confirms submission, not receipt: confirm an acknowledgment or
-  the destination transcript. Keep the report file too, since replies may await a turn boundary.
-  If a queue is accepted but an interrupted Codex thread does not receive it, check the
-  thread with `mcp__codex_tui__read_thread`, then use the available
-  `mcp__codex_tui__send_message_to_thread` inbox (prompt under 1,000 UTF-8 bytes).
-  Verify the new turn or acknowledgment; do not type into its pane while an inbox works.
+  Keep the current recipient UUID in the team's existing plan and refresh it on takeover.
+  A successful queue result confirms submission, not receipt. Queue delivery can wait for a
+  turn boundary even after the coordinator has read the report. Do not resend accepted mail
+  or switch delivery routes just because a reply is delayed. When dependent work needs proof
+  of receipt, inspect the existing transcript or recorded outcome; do not request routine
+  acknowledgments. Reconcile late notices against current decisions and completed work.
+  Never fall back to typing into the prompt box.
 - **Codex → Claude orchestrator, file:** assignments say "write the report to
   `.agents/tmp/<name>-report.md`, then stop"; you wait with
-  `herdr agent prompt … --wait` or `herdr agent wait <pane>` in the background.
+  `herdr agent wait <pane>` in the background.
   Give that path only to a Codex session that can write it: a YOLO one
   (`--dangerously-bypass-approvals-and-sandbox`, shown by `herdr pane process-info --pane
   <pane>`) can, but a sandboxed one refuses every write under `.agents/` unless it was started
   with `--add-dir <repo>/.agents/tmp` (keep that recipe in the repo's own harness notes).
   Otherwise ask for the report as its final reply and read it with
   `herdr agent read <pane> --source recent-unwrapped`.
-- **Codex → Claude orchestrator, live:** when a reply in your inbox is worth about two cents, give the
+- **Codex → Claude orchestrator, live:** for a necessary plan-changing notice when a direct inbox
+  is unavailable and a relay is authorized, give the
   Codex session a one-shot relay to run: `claude -p --model haiku --tools
   ListAgents,SendMessage --allowedTools "ListAgents SendMessage" --strict-mcp-config
   --no-session-persistence "<prompt>"`, where the prompt says to call SendMessage once with
@@ -157,12 +173,17 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   name is its `SendMessage` address.
 - **A new Codex worker** (only after the user confirms it): `herdr tab create --workspace
   <ws> --cwd <worktree> --label <name> --no-focus`, then `herdr agent start <name> --kind
-  codex --pane <root pane> -- <the flags the user's own Codex sessions run with>`. Read
-  the screen for the model, an empty prompt and no dialog, prompt once with one line that
-  names an absolute assignment file, and arm `herdr agent wait <name>` in the background.
-  Once its first turn has created the thread, set the thread name to `<name>` with
-  [the thread-name procedure](references/codex-title.md).
-  The fsd skill's `references/herdr.md` has the full procedure (used 2026-10-01).
+  codex --pane <root pane> -- <the flags the user's own Codex sessions run with>
+  'Read /absolute/path/to/assignment.md and follow it.'`. The final argument is Codex's
+  startup prompt, not text typed into a running agent's prompt box. Take
+  those flags from `herdr pane process-info` on one of the user's panes, minus `--no-daemon`:
+  the pane shell's `codex` alias adds it, and passing it again fails with "cannot be used
+  multiple times" and leaves a bare shell (seen 2026-10-29). A fresh agy pane opens on a
+  folder-trust dialog: read it, and send `enter` only when the read-back shows the trusted
+  choice. Read the screen to verify the model and that the startup assignment began, then
+  arm `herdr agent wait <name>` in the background. Once its first turn has created the
+  thread, set the thread name to `<name>` with [the thread-name procedure](references/codex-title.md).
+  Use its inbox for every follow-up.
   Keep the name under about 32 characters: a longer one starts, then every later
   `herdr agent` call answers `agent_not_found`. To change a running Codex session's model or
   effort, submit `herdr agent prompt <pane> '/model'` at an empty prompt with no dialog
@@ -171,6 +192,28 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   default; press `s` for "this session only", and check the config file afterwards. Its thread id for `codex queue` is the `id`
   on the first line of its session file under `~/.codex/sessions/<year>/<month>/<day>/`,
   matched by `cwd`.
+- **Startup prompts and readiness:** `herdr agent start` can time out while a Codex or
+  Antigravity startup assignment is already running. Read the pane and process arguments
+  and verify the new session before retrying; a readiness timeout is not proof that the
+  assignment was not delivered (verified with both harnesses on 2026-10-30).
+- **A fresh Antigravity review:** when the existing role is ready for a new conversation,
+  pass its brief through the CLI's `--prompt-interactive 'Read /absolute/path/to/brief.md'`
+  startup argument. Preserve the previous conversation ID and use the intended model,
+  effort and review mode. This avoids typing an assignment into its agent prompt.
+  Do not restart active user work merely to deliver a message. If the brief uses a file
+  inbox, create it and include task-boundary read instructions before launch; adding a
+  file or changing the brief afterwards does not notify an already-running agent.
+- A Codex session reads queued mail only between turns, and a long turn can run an hour, so
+  your corrections arrive after the worker has acted on the message they correct. Send one
+  self-contained instruction per decision. Before a STOP or reversal, check the committed
+  state: if the work you are reversing already landed acceptably, accept it (seen 2026-10-29:
+  a late "no studio change" made a worker revert a pushed commit, and the STOP that followed
+  made it undo the correction too).
+- A Codex reviewer started with `-s read-only -a never` cannot reach Herdr or agent-mail: brief
+  it to put the report in its final message, arm a background wait on its status, then read it
+  with `herdr agent read <name> --source recent`. A new Codex pane may open on an update dialog,
+  so `herdr agent start` answers `agent_not_ready`; read the screen and dismiss it with
+  `herdr pane send-keys <pane> esc` (seen 2026-10-28, codex 0.164).
 - Before the first prompt to a Codex worker, read its footer for the model: a repo's
   `.codex/config.toml` can pin a different model than `~/.codex/config.toml`, so pass
   `-m <model>` when the user named one (seen 2026-10-02: the repo pinned one model and the user asked for another).
@@ -185,8 +228,8 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   task, files it may touch, files it must not, git read-only, checks, report path.
   A brief copied from an earlier one goes stale: re-read the repo's current skills for
   every rule it quotes (databases, servers, sign-in) before sending it.
-- Verify receipt from the tool result, output or an acknowledgment before reporting
-  delivery; a sent message is not a read one.
+- Distinguish enqueue acceptance from receipt. Use the existing transcript or recorded
+  outcome when receipt matters; do not add acknowledgment messages for routine results.
 - Never ask a peer to do what your session was denied.
 
 A Claude prompt box can show a dim suggestion of the next input (often your own last
@@ -217,9 +260,8 @@ agents are busy and costs them nothing.
     context is the asset.
   Seen 2026-10-05: a researcher at 42% used was given a full removal map, ran out
   mid-task and compacted itself, which is the one moment nobody chooses the keep-list.
-- Before compacting, message the agent to run the `refine` skill and reply with its
-  `Memory:` and `Skill:` lines; compact once it is idle again. The user's rule is refine
-  before compaction, and an agent compacted from outside gets no other chance.
+- Before compacting, preserve the task state in the keep-list. Use `refine` only when there
+  is durable learning worth keeping or the user requests it; no routine memory footers.
 - The keep-list names: its ownership by path, what is committed and unpushed, the
   in-flight change and its state, open user decisions, the messaging protocol.
   End with "Drop tool output and file dumps."
@@ -234,13 +276,23 @@ agents are busy and costs them nothing.
   no model call: `herdr agent prompt <pane> '/context'` only opens the command menu, so follow
   with `herdr agent send-keys <pane> enter`, read the overlay ("76.5k/1.0M tokens (7.3%)",
   2026-10-19), then `send-keys <pane> esc`. `/compact` exists and runs the same way; whether it
-  takes a keep-list is unverified, so send the refine request and the keep-list as a message
+  takes a keep-list is unverified, so send the keep-list as a message
   first. Never send part of a command: `agent prompt` always presses Enter, which completed
   `/compa` to `/compact` in the box (cleared with `send-keys <pane> ctrl+u`). Its `idle` is a
   fallback (no matching rule in `herdr agent explain`), so read the pane before typing.
+  `/clear` runs from the same menu, but its first Enter only completes `/clear` into the box and
+  a second Enter runs it; `/context` reading 0 tokens is the receipt (2026-10-27).
 - A Codex pane showing "New activity · Earlier messages available" is only its transcript
   view; with the prompt line empty, `/compact` typed there worked every time (2026-10-06). A
   Claude pane with a numbered harness notice is different: see section 5.
+- **Clearing a Codex session:** `/new` at an empty prompt opens a picker (Enter keeps the
+  current worktree), and the new conversation starts on `~/.codex/config.toml`'s default model,
+  not the one the session ran: re-pick it with `/model` and `s` before the brief. Send the
+  brief through its inbox once a thread exists; if none exists, leave it pending and report
+  that limitation. Do not type the brief into the pane. A lone `/` sent
+  with `send-keys` lands in the box without showing, so a later prompt submits `//new` as a
+  message: read the prompt with `--ansi` first, where only a dim placeholder means empty
+  (2026-10-27).
 
 ## 7. Landing and pushing
 
@@ -250,16 +302,17 @@ shared checkout has one index, so two agents committing at once collide. The use
 pushes; a `main` push may deploy. Deferred findings become proposed backlog items in your report, not silence;
 they go into the backlog when the user says go.
 
-Before landing, a fresh read-only reviewer reads the change. Reviewers from other harnesses
-earn their cost. Seen 2026-10-19: Codex, Antigravity and a Claude session each found real
-defects in a messaging tool that the others missed, across three rounds (send races, stale locks, a stalled prompt filed
-as delivered). Send each reviewer the findings already known so it does not repeat them, and
-map a review of an older commit onto the current code before fixing. While it reads, the builder
-holds its edits; afterwards send one fix list as a file: the findings with their line
-numbers, plus your decisions on what the builder left open. Send a second fresh reviewer at
-fixes for data loss or secrets, and for any round after that resume that reviewer, so it
-re-runs its own probes: a fix round can add a defect. Run the root check and any browser check yourself before
-you call a change ready: a worker's exit code is a claim.
+Match review to risk. The lead reviews small changes and runs relevant checks, including a
+headless browser check for UI behavior. Use an available independent read-only reviewer from
+the authorized roster for consequential behavior, data, security or concurrency changes.
+This requirement does not authorize new agents. If none is available, perform the relevant
+checks and report the missing independent review; honor any stricter project requirement.
+
+Give reviewers the exact revision and known findings. Map findings from older revisions onto
+the current code before fixing, then send one consolidated fix list with file and line references.
+Repeat review when fixes introduce new risk or leave consequential findings unresolved.
+Verify check evidence against the revision being landed. Re-run checks for changed code,
+missing evidence or unresolved concerns, while preserving required project checks.
 
 Before a merge, `git merge-tree --write-tree main <branch>` shows whether it conflicts without
 touching anything; `git merge -F -` does not read stdin, so write the message to a file. Two
@@ -268,10 +321,9 @@ them. A branch cut before a repo-wide change (a fence, a rename) can bring a fil
 it: grep for stragglers after the merge. For a small fix after a second review, read the diff
 yourself; resuming a reviewer costs its whole context again.
 
-Design documents for the user (a spec, a decisions list, a proof) get a fresh skeptic
-reader before they see them, who re-runs the proof and attacks it, then the author revises and
-keeps the first version beside it. A finding a buyer or a model could turn on (lexical checks,
-for example) gets a reachability check before it is ranked.
+Use independent review for design documents when consequential assumptions or decisions need
+checking, or when requested. Routine notes need no separate reviewer. Verify whether a reported
+failure is reachable before ranking its severity.
 
 When the change talks to an outside service, exercise that path once with the real
 credentials right after the deploy; a health check is not that. Seen 2026-10-01:
@@ -287,10 +339,9 @@ the setting without an error, and `show lock_timeout` there answered `0`.
 A reviewer reads a detached snapshot of the builder's head (`git worktree add --detach`),
 so the builder never waits; move it with `git checkout --detach <new head>` for a re-check,
 which leaves the reviewer's untracked probe scripts in place so it re-runs them unchanged.
-Logic that reconciles reads over time (event identities, boundaries, "what was already
-seen") takes several rounds: on milton the reader went 8, 3, 1 and 0 findings, then its list
-4, 3, 2, 1 and 0. When a fix round adds a defect, have the builder write the rule as a table
-before touching code again; the next round shrank every time that was done.
+For logic that reconciles reads over time, check event identities, boundaries and what was
+already seen. When a fix introduces a defect, clarify the rule before editing again. Further
+review rounds need new evidence or unresolved findings.
 
 When the user says "land and push" before a verdict is in, hold the words, say so, and carry
 them out on a clean verdict without asking again; on any finding, come back instead.
@@ -338,7 +389,8 @@ A preview serves whatever was last built in its worktree. While a designer, a re
 you are checking one, tell the builder to hold: no branch switch and no build there until
 the checks are done.
 
-Arm the wait in the same turn as the send, every time, and for a reviewer too. Seen
+When assigning work whose report is a dependency, arm the worker wait with the assignment;
+read the agreed report when it finishes. Routine plan-change notices need no receipt wait. Seen
 2026-10-05: a review finished and sat unread for three hours because its send went out
 without one, while a later assignment to the builder was built on the unreviewed branch.
 
