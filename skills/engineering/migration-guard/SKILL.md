@@ -1,6 +1,6 @@
 ---
 name: migration-guard
-description: "Checklist for a database schema migration file (Drizzle, Prisma, SQL, Alembic): non-destructive, reversible, rehearsed on a disposable database. Use when modifying database schemas or creating migration files. For planning a transition across releases, use the migration skill."
+description: "Checklist for a database schema migration file (Drizzle, Prisma, SQL, Alembic): non-destructive, reversible, rehearsed on a disposable database. Use when modifying database schemas or creating migration files."
 license: MIT
 metadata:
   version: "1.1.0"
@@ -11,7 +11,7 @@ metadata:
 Prevent catastrophic schema migrations, unrecoverable data loss, and locking deadlocks in relational databases.
 
 The repository's own migration procedure (its `AGENTS.md` or README) wins over this checklist.
-For sequencing a change across releases (expand, migrate, verify, contract), use the `migration` skill.
+For a broader rollout plan, the user can explicitly invoke `migration`; do not load it automatically.
 
 ## 4 Golden Migration Rules
 

@@ -1,3 +1,3 @@
 interface:
   display_name: "Doc Drift Sentinel"
-  short_description: "Keep docs in sync with code changes"
+  short_description: "Keep affected docs in sync with behavior"

@@ -1,6 +1,7 @@
 ---
 name: walkthrough
-description: Write a linear walkthrough that explains how code runs, step by step in execution order, with every code excerpt pulled from the files by a command rather than retyped. Use for "walk me through this", "walkthrough", "how does this work", "explain this change", "explain this feature/module/codebase", after a large agent-written change lands, or before reviewing code you did not write.
+description: Explain code step by step in execution order using excerpts from the source.
+disable-model-invocation: true
 ---
 
 # Linear walkthrough
@@ -19,20 +20,20 @@ Resolve the target from the request:
   function) and follow the calls.
 - **A module or codebase:** start from its public entry points.
 
-With no target named, use the uncommitted changes, or the last commit when the tree is clean.
-Ask once only when two readings would produce different walkthroughs.
+Resolve an unnamed target from the conversation. Use the working changes or last commit only
+when the request points there. Ask once when ambiguity would produce different walkthroughs.
 
 ## 2. Read before writing
 
-Read every file in scope, then trace the execution path: what calls what, with which data, and
+Read the code needed to trace the requested execution path: what calls what, with which data, and
 what state changes. Plan the sections in **execution order** (input to effect), not file order
 or diff order. For a change, explain the new path, and note what the old path did only where the
 difference matters.
 
 ## 3. Write it
 
-Number the sections in execution order. Each section has a few sentences of plain explanation
-followed by the excerpt that shows it. Cover along the way:
+Explain the flow in execution order. Use numbered steps and short source excerpts when they
+help, at the level of detail requested. Cover the relevant parts of:
 
 - why the code is shaped this way, taken from comments, commit messages and docs (cite them);
 - invariants, edge cases and error paths;
@@ -53,19 +54,12 @@ output verbatim:
 
 Head each fenced block with its source, like `path/to/file.ts:40-58` or `git show abc123:path`.
 Keep excerpts short (about 25 lines); show two excerpts rather than eliding inside one. Before
-finishing, re-run the extraction for each excerpt, or `grep -nF` its first line, to confirm it
-still matches the file.
-
-If `uvx showboat --help` works, you may build the file with `showboat note` for prose and
-`showboat exec` for extraction commands, which records each command beside its output.
+delivery, recheck excerpts if the source has changed since extraction.
 
 ## 5. Deliver it
 
-Save the walkthrough as Markdown with a unique name such as `walkthrough-<topic>-<date>.md`. Use
-the repository's private scratch location when its instructions name one (for example
-`.agents/tmp/`), otherwise the OS temporary directory. Do not commit it unless asked.
-
-In chat, give a short plain-English summary of the flow (a few sentences), the risks or gaps you
-flagged, and the absolute path to the file.
+Deliver in chat by default. Create a separate file only when requested. For a requested file,
+use the chosen destination or the repository's private scratch location; otherwise use a unique
+name in the OS temporary directory. Link to it in chat and do not commit it unless asked.
 
 Based on the linear walkthrough pattern in [Simon Willison's Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/linear-walkthroughs/).

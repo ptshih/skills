@@ -1,6 +1,6 @@
 ---
 name: dep-auditor
-description: "Audit dependency additions in package.json, Cargo.toml, or requirements.txt for bundle bloat, CVE vulnerabilities, license compliance, and standard library alternatives."
+description: "Review dependency additions and material upgrades for suitable existing alternatives, size, vulnerabilities and compatibility with the repository's license policy. Also use for explicit dependency audit requests."
 license: MIT
 metadata:
   version: "1.0.0"
@@ -8,12 +8,13 @@ metadata:
 
 # Dep-Auditor: Lean & Secure Dependency Auditing
 
-Prevent agents from pulling in heavy, unvetted, or vulnerable dependencies when existing utilities or standard library functions suffice.
+Review dependencies affected by the requested change. Reuse existing utilities or standard
+library functions when they meet the same requirements; preserve unrelated dependencies.
 
-## Audit Checklist for Added Dependencies
+## Audit Checklist for Changed Dependencies
 
 1. **Standard library replacement:**
-   - Can this be done in modern JS/TS standard library?
+   - Can existing project utilities or the language's standard library meet the same requirements?
      - `lodash/cloneDeep` -> native `structuredClone()`.
      - `lodash/assign` / shallow merges -> `Object.assign()` or spread. A deep merge (`lodash/merge`) has no native equivalent; keep a small helper or the dependency.
      - `axios` / `request` -> native `fetch()`.
@@ -22,10 +23,11 @@ Prevent agents from pulling in heavy, unvetted, or vulnerable dependencies when 
 
 2. **Bundle size & unpack overhead:**
    - Prefer zero-dependency or tree-shakeable packages.
-   - Flag packages pulling > 50 transitive sub-dependencies for simple utilities.
+   - Inspect added bundle or install cost when material to the project and the dependency's purpose.
 
 3. **Security audit:**
-   Run project security vulnerability scanner:
+   Use the project's configured vulnerability check when relevant to the changed dependency.
+   Use available tools; do not install a scanner just for this review. Examples:
    ```bash
    # npm projects
    npm audit
@@ -39,7 +41,10 @@ Prevent agents from pulling in heavy, unvetted, or vulnerable dependencies when 
    # Python
    pip-audit
    ```
-   Must exit 0 with zero high or critical CVEs.
+   Inspect the findings and exit code. Distinguish new or worsened findings from pre-existing
+   ones, and report any gaps in the check. Preserve project-required gates; keep fixes scoped
+   to the requested dependency change.
 
 4. **License check:**
-   Ensure license is permissive (MIT, Apache-2.0, BSD-2/3-Clause, ISC). Reject viral GPL/AGPL in proprietary repositories.
+   Check the changed dependency against the repository's license policy. Flag unclear
+   compatibility for a decision instead of imposing a separate blanket license rule.

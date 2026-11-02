@@ -1,6 +1,6 @@
 ---
 name: perf-optimizer
-description: "Identify and eliminate performance bottlenecks: database N+1 queries, un-indexed lookups, accidental O(N²) loops, redundant React re-renders, and memory leaks."
+description: "Investigate reported performance problems, measured regressions or explicit optimization requests. Measure the affected path, change the demonstrated bottleneck and compare before and after results."
 license: MIT
 metadata:
   version: "1.0.0"
@@ -8,7 +8,8 @@ metadata:
 
 # Perf-Optimizer: Bottleneck Elimination & Query Tuning
 
-Audit and optimize runtime performance across database queries, algorithms, and rendering loops.
+Investigate the performance problem within the requested scope. Do not turn ordinary code
+changes into an optimization audit or change unrelated paths.
 
 ## Measure First
 
@@ -22,7 +23,7 @@ measured reason.
 
 ### 1. Database & ORM Tuning
 - **N+1 Query Elimination:** Replace iterative single-record queries inside loops with batch fetching (`IN (...)`, `with: { ... }`, or dataloaders).
-- **Index Verification:** Assert columns used in `WHERE`, `ORDER BY`, and `JOIN` clauses have corresponding database indexes.
+- **Index Verification:** Use the affected query's plan and workload to assess index needs; do not add indexes just because a column appears in a clause.
 - **Selective Projections:** Replace `SELECT *` with explicit column selections to avoid serializing unneeded blobs or large text fields.
 
 ### 2. Algorithmic Complexity (CPU & Memory)
@@ -32,5 +33,5 @@ measured reason.
 
 ### 3. Frontend & Rendering Performance
 - **React Re-renders:** Memoize expensive calculations with `useMemo`; stabilize callback references with `useCallback` when passed to memoized children.
-- **Virtualization:** Virtualize long lists (> 100 items) using windowing libraries instead of rendering 5,000 DOM nodes.
+- **Virtualization:** Use windowing only when measured rendering cost justifies the added complexity.
 - **Dynamic Imports:** Code-split heavy dependencies (charts, rich-text editors, syntax highlighters) using dynamic `import()`.

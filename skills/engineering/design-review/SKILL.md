@@ -1,19 +1,20 @@
 ---
 name: design-review
-description: Use when a feature is visually complete and needs design review — checks visual compliance, interaction quality, and component polish against the design system using parallel agent teams
+description: Review visual design, interaction quality and component polish against the project's design system. Use for requested design reviews, after substantial UI changes, or when design-system compliance is uncertain.
 ---
 
 # Design Review
 
-Dispatch a parallel agent team to review a feature against the project's design system. Three agents run simultaneously, each focused on a different dimension. Results are consolidated into a single prioritized report.
+Review a feature against the project's design system through three lenses, then consolidate
+the findings into one prioritized report. Small UI changes get a focused diff and headless
+browser check in the main session.
 
-**Core principle:** Design review is three lenses applied at once — visual compliance, interaction quality, and component robustness.
+Apply three lenses: visual compliance, interaction quality, and component robustness.
 
 ## When to Use
 
-- Feature is visually complete and ready for review
-- Before merging UI-heavy PRs
-- After implementing new component patterns
+- The user requests a design review
+- Substantial UI changes or new component patterns are ready for review
 - When design system compliance is uncertain
 
 ## Prerequisites
@@ -30,21 +31,16 @@ Dispatch a parallel agent team to review a feature against the project's design 
 git diff main --name-only -- '*.tsx' '*.ts' '*.css'
 ```
 
-Read DESIGN.md fully before briefing agents — you need to include the spec in each agent's prompt.
+Read the design system before reviewing. Include the relevant guidance in any delegated brief.
 
-### 2. Launch three agents in parallel
+### 2. Apply the three review lenses
 
-Run three read-only reviewers at once, one per lens below, each told not to edit. Use your
-harness's way of running agents in parallel:
+Apply these lenses yourself by default. Merely selecting this skill does not authorize
+spawning agents. If the user or project instructions authorize delegation, use the smallest
+read-only review team that fits the change; a three-lens review need not mean three agents.
+Use only the selected harness's supported tools and load its launch instructions only then.
 
-- **Claude Code:** the Agent tool with a read-only reviewer type (`fsd:reviewer` when it is
-  installed, otherwise `general-purpose` told not to edit) and `run_in_background: true` for all
-  three. Not `Explore`: it locates code from excerpts and does not review it.
-- **Codex, Pi or another harness:** its own subagent or background-agent feature, when it has one.
-- **No parallel agents:** apply the three lenses yourself, one after another, and still
-  consolidate them in step 4.
-
-**Agent 1 — Visual Design:**
+**Visual Design:**
 - Color token compliance (no hardcoded hex)
 - Typography scale usage (correct text-* tokens)
 - Spacing grid alignment (8px base unit or project-specific)
@@ -52,7 +48,7 @@ harness's way of running agents in parallel:
 - Semantic color states (success/warning/error/info)
 - Surface/background token usage
 
-**Agent 2 — Interaction/UX:**
+**Interaction/UX:**
 - Animation easing and duration vs spec
 - Loading states and transitions
 - Auto-scroll behavior
@@ -62,7 +58,7 @@ harness's way of running agents in parallel:
 - Responsive behavior at breakpoints
 - Error state graceful degradation
 
-**Agent 3 — Component Polish:**
+**Component Polish:**
 - Text truncation/overflow handling
 - Empty array/missing data edge cases
 - Schema validation strictness
@@ -71,7 +67,7 @@ harness's way of running agents in parallel:
 - Key prop stability (no array index keys)
 - TypeScript type safety
 
-### 3. Brief each agent with
+### 3. For delegated review, brief each agent with
 
 - The full design system spec (colors, typography, spacing, motion, etc.)
 - The exact file list to review (8-12 files max per agent)
@@ -82,7 +78,7 @@ harness's way of running agents in parallel:
 
 ### 4. Consolidate into severity table
 
-When all agents complete, merge findings into one report:
+When the review is complete, merge findings into one report:
 
 | Severity | Criteria |
 |----------|----------|
@@ -105,18 +101,16 @@ Include a "What's already great" section — review should validate good work to
 
 ## On Herdr
 
-When `HERDR_ENV` is `1`, the three reviewers can be separate sessions in their own tabs, which
-works in any harness and lets the user watch them:
+When `HERDR_ENV` is `1` and delegation is authorized, reviewers can be separate sessions
+in their own tabs:
 
 1. Write each reviewer's brief (step 3) to a file.
-2. Per reviewer, open a tab at the repository root and start a read-only session (Claude Code
-   `--permission-mode plan --disallowedTools "Bash Edit Write NotebookEdit"`, since plan mode
-   alone still runs commands; Codex `--sandbox read-only`; Pi `--tools read,grep,find,ls`):
-   `herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo root> --label <lens>-review --no-focus`,
-   then `herdr agent start <name> --kind <claude|codex|pi> --pane <root pane> -- <read-only flags>`.
-   Read the screen for an empty prompt and no dialog, then send one line naming the brief and
-   asking for the findings as the final reply: `herdr agent prompt <name> "<line>" --wait
-   --until working --timeout 30000`, so the wait below cannot settle before it starts.
-3. Wait for all three with `wait-all-idle.sh` from the orchestrator skill's "Take over", read
+2. Follow the orchestrator skill's "Routing" section to start each selected harness in a
+   read-only session without taking focus. A new Codex session receives the brief path as
+   its CLI startup prompt argument; every follow-up uses its inbox, never pane typing.
+   For another harness, use its inbox when reachable; pane input requires a freshly
+   inspected empty prompt and no dialog. Verify that the assignment began before waiting.
+3. Wait for the reviewers with `wait-all-idle.sh` from the orchestrator skill's "Take over", read
    each report with `herdr agent read <name> --source recent-unwrapped`, then consolidate.
-4. Exit each session with `herdr agent send-keys <name> ctrl+c ctrl+c` and close its tab.
+4. After collecting the reports, close only the completed reviewer sessions created for
+   this task, using the selected harness's documented exit procedure.

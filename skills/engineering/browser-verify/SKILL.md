@@ -1,47 +1,55 @@
 ---
 name: browser-verify
-description: "Verify web UI, layout, and frontend rendering headlessly using Playwright. Captures screenshots and accessibility trees. Use when modifying web pages, components, or verifying local web server output."
+description: "Verify rendering, layout and browser interactions affected by UI changes, or fulfill explicit browser-verification requests. Use a headless browser and focused screenshots or accessibility snapshots."
 license: MIT
 metadata:
   version: "1.0.0"
 ---
 
-# Browser-Verify: Headless Frontend & Visual Inspection
+# Browser verification
 
-Verify web interfaces and server rendering headlessly without blind guessing. Follows `AGENTS.md > Browser automation` (headless by default, hidden tabs, session reuse).
+Check the browser behavior affected by the request. Reuse the task's existing browser session
+and stay headless unless the user requests a visible browser or an essential interaction needs
+one; explain that need first.
 
-## Verification Procedure
+## 1. Find the running application
 
-### 1. Check running dev server
-Before starting any server, check if port already listens (required by `AGENTS.md`):
+Read the project's server instructions and check its actual port before starting a server:
+
 ```bash
-lsof -nP -iTCP:3000 -sTCP:LISTEN
-```
-Never kill or restart a running dev server.
-
-### 2. Playwright CLI session (Pi / any terminal agent)
-`playwright-cli` is headless unless `--headed` is passed; reuse one named session per task.
-Open the session from a scratch directory, never inside a checkout: it writes `.playwright-cli/`
-snapshot files into the directory it was opened in, for the session's whole life.
-```bash
-cd <scratch dir> && playwright-cli -s=verify open http://localhost:<port>/<route>
-playwright-cli -s=verify snapshot   # accessibility tree: verify text/buttons exist
-playwright-cli -s=verify screenshot --filename=/tmp/agent-artifacts/ui-<timestamp>.png
-playwright-cli -s=verify close
-```
-Inspect the screenshot with `read` or an image tool to verify styling and layout.
-
-### 3. One-shot Playwright (Claude Code / Codex / Terminal)
-```bash
-# Capture full page screenshot
-npx -y playwright screenshot --viewport-size="1280,800" http://localhost:3000 /tmp/agent-artifacts/shot.png
-
-# Test end-to-end user interaction headlessly
-npx -y playwright test
+lsof -nP -iTCP:<port> -sTCP:LISTEN
 ```
 
-### 4. Fast API / Status Check
-For JSON endpoints and SSR response verification:
+Never kill or restart an existing dev server.
+
+## 2. Use the available browser tools
+
+Prefer an available browser integration when it covers the task. Use Playwright CLI when
+requested or when the available integration cannot perform the needed interaction.
+
+For CLI work, reuse the task's named session. If a new session is needed, open it from a private
+scratch directory outside the checkout: Playwright CLI writes `.playwright-cli/` snapshots there.
+Keep artifacts in the requested destination or the task's temporary directory.
+
 ```bash
-curl -is http://localhost:3000/api/health | head -n 20
+cd <scratch-directory>
+playwright-cli -s=<task-session> open http://localhost:<port>/<route>
+playwright-cli -s=<task-session> snapshot
+playwright-cli -s=<task-session> screenshot --filename=<artifact-path>.png
 ```
+
+Reuse that session throughout the task. Close only sessions created for this task when finished.
+
+## 3. Check the affected behavior
+
+Exercise the changed route and interactions. Use accessibility snapshots for controls and text;
+inspect screenshots with an image tool before claiming layout or styling is correct. Check
+console or network errors when relevant. A successful HTTP response alone does not verify UI.
+
+Use the existing project toolchain. Run relevant checks and required project gates; this skill
+does not require downloading tooling, creating test files or running an unrelated full test suite.
+
+## 4. Report the evidence
+
+Briefly state what was exercised, the result and any unverified behavior. Include the route and
+viewport when they matter to the finding.

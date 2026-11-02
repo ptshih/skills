@@ -19,7 +19,7 @@ project has its own site; pointing it at a dependency's site is misleading.
 ## Topics
 
 Rules GitHub enforces: lowercase, letters/digits/hyphens, 50 characters max, 20 topics
-max. Aim for ten to fifteen drawn from four buckets:
+max. Choose only relevant topics, without a fixed quota, from these buckets:
 
 - **Category:** what kind of thing it is (`agent-skill`, `cli`, `library`, `github-action`).
 - **Ecosystem:** every platform it installs into or drives (`claude-code`,
@@ -33,6 +33,9 @@ language, `spring` is the framework. Prefer the compound (`pi-package`).
 
 ## Applying and verifying
 
+Apply changes only when the request includes GitHub metadata updates. Otherwise provide the
+proposed values for review. A repository URL alone does not authorize edits or publication.
+
 ```sh
 gh repo edit OWNER/REPO --description "…" \
   --add-topic agent-skill --add-topic claude-code   # one flag per topic
@@ -40,8 +43,8 @@ gh repo view OWNER/REPO --json description,repositoryTopics \
   --jq '.description, ([.repositoryTopics[].name] | sort | join(" "))'
 ```
 
-`--add-topic` appends; use `--remove-topic` for stale ones. The rendered README check
-belongs with this step too:
+`--add-topic` appends; use `--remove-topic` for stale ones within the requested change.
+When the work also changed and published README assets, verify their rendering:
 
 ```sh
 gh api repos/OWNER/REPO/readme -H "Accept: application/vnd.github.html" \

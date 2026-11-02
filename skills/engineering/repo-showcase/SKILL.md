@@ -1,6 +1,6 @@
 ---
 name: repo-showcase
-description: Make a GitHub repository presentable and discoverable the honest way — shields.io badges that state true facts, a README demo GIF (a real recording, or a terminal-style animation rendered from a JSON storyboard with the bundled script), a rewritten repository description and topics, then proof that GitHub renders it all. Use whenever the user wants a repo to look good, get legitimate attention or stars, add badges, add a demo/animation/screencast to a README, set GitHub topics, or fix a stale description — even when they ask for only one of those pieces. Also use to redirect requests for manufactured engagement (fake accounts, star gaming) toward what actually works.
+description: Improve a GitHub repository's README presentation, badges, demo or description and topics when requested. Complete only the requested pieces, verify factual claims and follow existing commit and publishing authorization.
 ---
 
 # Repo showcase
@@ -12,9 +12,13 @@ illustrated, and the description matches the README rather than an older plan.
 
 ## Ground rules
 
+Work only on the requested parts. A badge request does not imply a demo, metadata changes or
+publication. Read only the references needed for those parts. Tool access and a repository URL
+do not expand authorization.
+
 - **No manufactured engagement.** Fake accounts, star rings and vote trading break
   GitHub's terms and get repos flagged. Decline in one sentence and offer this skill's
-  work instead; the user usually wants attention, not the specific trick.
+  work as an alternative; do not start that work unless requested.
 - **Badges assert facts.** Only add a badge the repo backs right now: no CI badge without
   a workflow, no "tests passing" without CI, no star or download counters, no hardcoded
   version when a tag-reading badge exists.
@@ -22,11 +26,12 @@ illustrated, and the description matches the README rather than an older plan.
   drawn from the repo's own documented behaviour is fine and often the only practical
   option; passing it off as a screen recording is not.
 - **The repo's own gates win.** Read its validators, tests and contribution conventions
-  before adding files. Some repos allowlist file types (the fsd repo rejected anything
-  that was not `.md`/`.json`/`.mjs`), so a binary asset may need a scoped allowance plus a
-  test, not a bypass.
+  before adding files. Respect any file-type restrictions and verify that requested assets
+  fit the repository's existing policy.
 
 ## Workflow
+
+Use only the sections relevant to the requested change.
 
 The references, script and example storyboard live in this skill's folder, `${CLAUDE_SKILL_DIR}`; in a
 harness that does not expand `${CLAUDE_SKILL_DIR}`, use the folder this file was loaded from.
@@ -47,8 +52,8 @@ designing; retrofitting to a validator costs more than reading it.
 
 ### 2. Badges
 
-Read `${CLAUDE_SKILL_DIR}/references/badges.md`. Pick four to six: version from tags, license, one badge per
-install surface, one per hard dependency or platform, and at most one "positioning" badge
+Read `${CLAUDE_SKILL_DIR}/references/badges.md`. Pick only useful badges within the request: version from tags, license,
+install surfaces, hard dependencies or platforms, and at most one "positioning" badge
 (for example runtime: none). Verify every URL returns 200 and the rendered title says what
 you expect before it goes in the README.
 
@@ -70,7 +75,7 @@ like a user would. Start from `${CLAUDE_SKILL_DIR}/assets/example-spec.json`, wh
 
 ### 4. Wire the README
 
-Under the title and one-line tagline, in this order: badges on consecutive lines, the GIF
+When those assets are requested, place them under the title and one-line tagline: badges on consecutive lines, the GIF
 with descriptive alt text, an italic one- or two-line caption that says recorded or
 illustrated and links to the source material, then the existing prose. Store the GIF at
 `assets/demo.gif` with a relative link so GitHub renders it and any link checker validates
@@ -80,16 +85,18 @@ line is enough).
 ### 5. Description and topics
 
 Read `${CLAUDE_SKILL_DIR}/references/github-metadata.md`. Rewrite the description from the README's tagline
-and audience; delete stale claims. Choose ten to fifteen topics covering the category, the
+and audience; delete stale claims. Choose relevant topics covering the category, the
 ecosystems it plugs into, and the problem words a searcher would type. Apply with
-`gh repo edit` and read the result back.
+`gh repo edit` only when metadata changes are part of the authorized request, then read the
+result back. Otherwise leave the proposed description or topics ready for review.
 
 ### 6. Verify, land, confirm on GitHub
 
-Run the repo's own checks and record exit codes. Commit by explicit path, following the
-repo's trailer convention. Push when the user pointed at the GitHub URL or otherwise asked
-for the result to be on GitHub; if they only asked for local changes, stop before the push
-and say so. Then confirm from the outside:
+Run the repo's own checks and record exit codes. Commit or push only when the user asked
+for that action or an already agreed loop covers it. A GitHub URL alone authorizes neither.
+When a commit is authorized, use explicit paths and the repo's trailer convention. If
+publication is not authorized, leave the verified result ready for review. After an
+authorized push, confirm the changed parts from the outside using the relevant checks:
 
 ```sh
 gh api repos/OWNER/REPO/readme -H "Accept: application/vnd.github.html" | grep -c '<img'
@@ -99,8 +106,6 @@ gh repo view OWNER/REPO --json description,repositoryTopics
 
 ## Report
 
-Lead with where the result lives (URL and commit). Then, in a few bullets each: what the
-GIF shows and whether it is recorded or illustrated, which badges and why, the new
-description and topics, and any repo-specific change that was needed to admit the asset.
-Finish with a small table of executed checks and their exit codes, and the path to the
-storyboard so the GIF can be regenerated.
+Report the requested changes, where they live, checks and exit codes, and anything unverified.
+Include a URL or commit only when it exists. For a demo, state whether it is recorded or
+illustrated and link its source. Keep the report concise; omit sections for work not requested.

@@ -1,6 +1,7 @@
 ---
 name: lean-build
-description: Build feature work with high overbuilding risk. Use for new behavior, product slices, or integrations where repository reuse, strict scope, and an explicit stop condition matter.
+description: Build a minimal feature slice with clear acceptance, repository reuse and an explicit stopping point.
+disable-model-invocation: true
 ---
 
 # Lean build

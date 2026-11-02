@@ -8,12 +8,13 @@ metadata:
 
 # Commit-Artisan: Atomic & Bisectable Git Commits
 
-Transform dirty working trees into clean, logically isolated, bisectable commits. Strictly complies with `AGENTS.md > Implementation and verification`.
+Organize only the authorized changes into logically isolated, bisectable commits. Follow
+current user and project git instructions, and preserve other sessions' work.
 
-## Hard Constraints (from AGENTS.md)
+## Constraints
 1. **Explicit paths only:** Never run `git add -A`, `git add .`, `git commit -a`. Stage explicit file paths only.
-2. **No Co-Authored-By:** Never add `Co-Authored-By` or AI attribution trailers.
-3. **Tests must pass at each commit:** Every commit should leave the build and test suite green so `git bisect` functions properly.
+2. **Follow repository conventions:** Use required message formats and trailers; do not invent attribution.
+3. **Keep commits independently valid:** Check affected behavior and project-required gates so commits remain useful for bisecting. Reuse still-current evidence and distinguish pre-existing failures.
 
 ## Commit Decomposition
 
@@ -23,6 +24,8 @@ needs several commits, order them so dependencies land first (a schema and its m
 the code that reads it), and each commit still builds and passes its tests.
 
 ## Conventional Format
+Use the repository's convention when it differs; otherwise:
+
 ```
 <type>(<scope>): <imperative summary under 72 chars>
 
@@ -44,6 +47,6 @@ git commit -m "feat(db): add user_preferences table"
 git add src/services/preferences.ts src/services/preferences.test.ts
 git commit -m "feat(preferences): fall back to system defaults"
 
-# 4. Verify git status clean
+# 4. Inspect and report remaining uncommitted work
 git status --short
 ```

@@ -1,6 +1,6 @@
 ---
 name: doc-drift-sentinel
-description: "Detect and eliminate documentation drift. Compare modified functions, CLI flags, configuration keys, and API endpoints against README.md and documentation files to keep docs synchronized with code."
+description: "Keep affected documentation aligned when public behavior, CLI flags, APIs, configuration or usage changes. Also use for explicit documentation synchronization or drift-review requests."
 license: MIT
 metadata:
   version: "1.0.0"
@@ -8,7 +8,8 @@ metadata:
 
 # Doc-Drift-Sentinel: Code-to-Docs Synchronization
 
-Ensure documentation, README guides, and inline documentation stay 100% accurate after code refactors or feature additions.
+Check documentation affected by the requested change. Internal refactors with unchanged
+documented behavior do not require a separate documentation audit.
 
 ## Audit Workflow
 
@@ -33,5 +34,5 @@ Inspect corresponding docs:
 
 ### 3. Update & Sync Docs
 - Update outdated parameter names, flags, and return types.
-- Ensure all code blocks in `README.md` are syntax-valid and match new implementation.
-- Stage updated doc files alongside code changes before committing.
+- Verify changed examples match the implementation, using relevant available checks.
+- Keep documentation edits scoped to the changed behavior.

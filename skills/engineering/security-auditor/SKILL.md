@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: "Audit code diffs for OWASP Top 10 vulnerabilities, injection flaws, path traversal, ReDoS, insecure direct object references, and missing authentication checks before committing."
+description: "Review security-sensitive changes to authentication, authorization, secrets, trust boundaries or untrusted input, and explicit security audit requests. Check the affected code for injection, traversal, SSRF, access-control flaws and related vulnerabilities."
 license: MIT
 metadata:
   version: "1.0.0"
@@ -8,7 +8,9 @@ metadata:
 
 # Security-Auditor: Zero-Trust Code & Vulnerability Review
 
-Inspect code changes for critical security vulnerabilities before staging or merging.
+Review the security-relevant parts of the requested change. Apply the checklist to affected
+trust boundaries and report concrete findings with file and line references. Preserve unrelated
+work and any project-required security checks.
 
 ## Vulnerability Checklist
 

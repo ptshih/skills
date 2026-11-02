@@ -1,10 +1,14 @@
 ---
 name: todo
-description: Work a repo's engineering backlog in TODO.md — show what is open, add an item, work one, update or close it, or groom the file. Use for "what's on the todo list", "what should I pick up", "what needs my call", "anything blocked", "add a todo", "save as a todo", "let's work on #12", "let's work on the todo to…", "mark that done", "drop that one", "groom the backlog".
+description: Read or update a repository's TODO.md backlog when the request or conversation clearly refers to that backlog or an identified item. Use for listing, adding, working, updating, closing or grooming items; general status questions alone do not select this workflow.
 allowed-tools: Bash(sh ${CLAUDE_SKILL_DIR}/scripts/*)
 ---
 
 # Todo
+
+Perform only the requested backlog operation. Status and inspection requests stay read-only.
+Use authorization already given; the skill and the backlog file do not grant permission to
+commit, publish, spend money or expand the task.
 
 <!-- Editing this file: never write a dollar sign followed by a digit. The skill
 loader replaces those with the words the skill was invoked with, which once
@@ -38,8 +42,9 @@ retype: each reads and prints, none writes. Run them from the repo root as
 and the **gate tags**: whatever an agent cannot supply on its own, such as
 `paid` (spends real money), `founder` (a person owns it or must say go) or
 `device` (needs real hardware). Every tag other than `doing` and `blocked:` is
-a gate, and an item carrying one waits on a person. Read the header before the
-first edit in a session, and never use a tag the legend does not define.
+a gate, and an item carrying one needs the relevant authorization or human action. Check
+what the user already approved before asking again. Read the header before the first edit
+in a session, and never use a tag the legend does not define.
 
 Two tags are built in. **`doing`** means work toward it has landed and the item
 is still open — never a claim (Updating says why). **`blocked:`** names what
@@ -176,9 +181,10 @@ Never invent metadata to look thorough. If the priority is genuinely unknown,
 
 ## Starting a backlog
 
-With no `TODO.md` yet, create one with this header. Propose the areas from the
-repo's top-level folders and confirm them before the first item; keep the
-gates the repo needs and delete the rest.
+When asked to create a backlog or add an item and no `TODO.md` exists, use this header.
+Choose areas from the repository's existing organization and retain only gates its policy
+requires. Ask only when a missing decision materially affects the result; a status request
+does not create a backlog.
 
 ```markdown
 # TODO — engineering backlog
@@ -202,9 +208,9 @@ For "let's work on #12" or "the todo to…":
 
 1. **Read it whole** — the item, its section preamble, the docs it names, and
    its story if it has one, whose `Accept:` lines are the acceptance.
-2. **Respect the gates.** A gate tag means a person's go comes first: name the
-   decision and wait. A gate that spends money also falls under whatever
-   approval rules the repo's `AGENTS.md` or `CLAUDE.md` sets. `blocked:`: check
+2. **Respect the gates.** Check whether existing authorization covers each gate. Ask and
+   wait only for an unresolved decision or required human action. A gate that spends money
+   also falls under whatever approval rules the repo's `AGENTS.md` or `CLAUDE.md` sets. `blocked:`: check
    whether the blocker still holds, and stop if it does.
 3. **Re-verify what it cites** — paths, migration numbers, counts, "decided"
    facts. Items drift while they wait; correct the item in the same change.
@@ -234,16 +240,11 @@ session stops landing backlog changes until yours does.
 
 **Delete items when done — git history is the archive.** A `- [x]` tombstone
 costs every future reader the work of deciding whether it still matters.
-**Dropping** — deciding the work will not happen — deletes the same way, with
-the reason in the commit subject. Decide and move on: a dropped item is cheaper
-than one nobody believes.
+**Dropping** deletes the same way when the user requests it or an agreed grooming scope
+authorizes it. Record the reason; include it in the subject if a commit is authorized.
 
-Before deleting, ask one question: **does this item carry a durable lesson?** A
-trap, a measured number, a rejected approach with its reason, a decision. If it
-does, that belongs in the repo's docs (amend the doc that owns the topic) or
-its agent instructions (`AGENTS.md` or `CLAUDE.md`, only if an agent must know
-it to avoid breaking something) in the SAME commit — and only then does the
-item go.
+Before deleting, preserve any information still needed after the item is gone in the document
+that owns it. Routine closure does not require a new lesson, memory entry or agent instruction.
 
 If the repo keeps `STORIES.md`, check whether a story claims the item —
 `grep -nE 'Delivers:.*#12\b' STORIES.md` — and update it in the same commit:
@@ -257,12 +258,10 @@ reply.
 
 ## Grooming
 
-A consistency pass over the whole file. Report, don't silently fix anything
-that needs a judgment call. Open with two or three lines — how many items, what
-came back clean, what needs a person — then group the report by check, and
-give each finding a proposed fix marked **mechanical** (applied on a go) or
-**needs a call**. Run the scripts rather than estimating; a count by eye is
-not a finding.
+A consistency pass over the requested scope. For an audit or inspection request, report only.
+When asked to groom or update the backlog, apply mechanical corrections within scope and
+surface unresolved judgment calls. Briefly report what changed and what still needs a decision.
+Use the scripts for counts and findings rather than estimating.
 
 - **Ids** — duplicates, or an id above `next-id:` (both mean two sessions added at once).
 - **Malformed metadata** — an area or tag the legend does not define, a missing
@@ -306,13 +305,11 @@ else's work:
 git diff TODO.md
 ```
 
-Read the diff. If it contains an item you did not touch, that is another
-session's — leave the file for its owner and say so. Otherwise, when the user
-asked for this backlog change (a `/todo` request to add, update, close, drop or
-groom is that ask), commit it by explicit path (`git commit TODO.md -m "…"`),
-never `git add -A`. A backlog edit nobody asked for is never written in the first
-place (Adding), so TODO.md never waits on an approval. If the repo has
-a landing skill, it is the full ritual when this rides along with code.
+Read the diff and preserve changes owned by other sessions. A backlog edit does not itself
+authorize a commit: commit only when requested or covered by an agreed loop. When authorized,
+stage only the owned changes by explicit paths or hunks, following required project procedures.
+If ownership cannot be isolated, leave the change uncommitted and report why. Never include
+another session's edits merely to obtain a clean tree, and never `git add -A`.
 
 **Subjects name the item**, so `git log --grep` is its whole history. A commit
 that adds, updates, closes or drops an item names `#N` in its subject; a

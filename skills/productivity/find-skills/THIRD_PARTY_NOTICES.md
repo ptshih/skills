@@ -2,9 +2,9 @@
 
 `SKILL.md` is adapted from
 [Vercel's find-skills skill](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md).
-Changes: it triggers only on requests to find or install a skill, not on ordinary "how do I"
-questions; it installs only a skill the user approved by name, then reads the installed skill
-and reports what it can run. `agents/openai.yaml` is new. The following notice is preserved
+Changes: discovery requires a skill request; candidates are evaluated from their instructions
+and scripts rather than popularity. Installation follows the user's selected skill and scope,
+reuses existing approval, and verifies the installed result. `agents/openai.yaml` is new. The following notice is preserved
 from the [upstream repository](https://github.com/vercel-labs/skills/blob/main/LICENSE).
 
 ```text

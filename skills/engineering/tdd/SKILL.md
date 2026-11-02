@@ -1,11 +1,13 @@
 ---
 name: tdd
-description: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests.
+description: Test-driven development through behavioral interfaces, one red-green-refactor cycle at a time.
+disable-model-invocation: true
 ---
 
 # Test-Driven Development
 
-TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle: consult them before and during the loop, not after.
+TDD is the red → green loop. Use the guidance relevant to the current change: what a good test
+is, where it belongs, and which testing mistakes to avoid. Reuse established project conventions.
 
 When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
@@ -19,11 +21,13 @@ See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking g
 
 A **seam** is where a module's interface lives (the term is defined in `codebase-design`): the place where you observe behavior without reaching inside. Tests go through a module's interface, never against its internals. A deep module may also have internal seams used by its own tests; test at one only when the agreed seams include it.
 
-**Name the seam before each test.** Before writing a test, state the seam it goes through. When the seam is already settled (a bug fix in code that has tests, or a module whose existing public interface fits), use it and carry on. Confirm with the user only when the seam is new or unclear: a new module, an interface still in question, or more than one plausible boundary. You can't test everything, so agreeing those seams up front is how testing effort lands on the critical paths and complex logic instead of every edge case.
+Choose the test boundary from the behavior under test and the project's existing interfaces.
+Decide routine test structure without a per-test announcement or confirmation. Ask only when
+missing intent about expected behavior or the public interface materially affects the result.
+Focus coverage on the change's important behavior and risks.
 
-When you ask: "What's the public interface, and which seams should we test?"
-
-When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), call the Skill tool with "codebase-design" for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms, and it is a reference to consult, not a session to run.
+When interface design is part of the task, consult `codebase-design` as needed. It is a reference,
+not a separate workflow to run for every test.
 
 ## Anti-patterns
 
@@ -35,4 +39,4 @@ When the shape of that interface is itself in question (how deep the module is, 
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
-- **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
+- **Keep refactoring in scope.** A TDD cycle does not authorize unrelated cleanup or an additional review workflow.

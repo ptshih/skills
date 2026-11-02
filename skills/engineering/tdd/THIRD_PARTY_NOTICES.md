@@ -2,8 +2,9 @@
 
 `SKILL.md`, `tests.md`, `mocking.md` and `agents/openai.yaml` are adapted from
 [Matt Pocock's tdd skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md).
-Changes: a seam is confirmed with the user only when it is new or unclear; the seam definition
-follows the `codebase-design` vocabulary; `tests.md` allows call counts on a boundary fake when
+Changes: routine test structure follows existing interfaces, with questions reserved for missing
+intent that materially affects the result; the seam definition follows the `codebase-design`
+vocabulary; `tests.md` allows call counts on a boundary fake when
 the count is the rule, and direct checks of stored state when that state is the contract; the
 Codex label says "red-green loop". The following notice is preserved from the
 [upstream repository](https://github.com/mattpocock/skills/blob/main/LICENSE).

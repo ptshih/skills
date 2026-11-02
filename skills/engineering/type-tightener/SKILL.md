@@ -1,6 +1,6 @@
 ---
 name: type-tightener
-description: "Eliminate loose typing (any, as any, unknown passed on without a type guard, @ts-ignore) in modified TypeScript or Python files. Replace with strict schemas, generics, and discriminated unions. Run typecheck to verify."
+description: "Address unsafe types introduced or exposed by the current TypeScript or Python change, and explicit type-cleanup requests. Use precise types and necessary guards while preserving behavior and leaving unrelated code alone."
 license: MIT
 metadata:
   version: "1.0.0"
@@ -8,9 +8,11 @@ metadata:
 
 # Type-Tightener: Strict Typing & Schema Hardening
 
-Hunts down loose types, lazy escape hatches, and missing type guards introduced by LLMs. Replaces with strict, self-documenting types.
+Tighten types in the code affected by the requested change. Preserve behavior and public
+contracts. Reuse the project's type and validation tools; this skill does not require new
+schema libraries or cleanup elsewhere in a touched file.
 
-## Target Anti-Patterns to Eliminate
+## Type Risks to Check in Scope
 
 1. **`any` and `as any` casts:**
    - Replace with generic parameters, typed interfaces, or `unknown` + runtime type guard (`typeof`, `instanceof`, or Zod parser).
@@ -24,12 +26,13 @@ Hunts down loose types, lazy escape hatches, and missing type guards introduced 
    - A string literal union is already strict; leave it as it is.
 
 ## Verification
-Run project typecheck; must exit 0:
+Run the project's configured typecheck with its existing toolchain. Examples:
 ```bash
 # TypeScript
-bun x tsc --noEmit # or npx tsc --noEmit
+bun run check-types # or the project's equivalent script
 
 # Python
 pyright # or mypy .
 ```
-Ensure all existing unit tests pass via `bun test` / `npm test` after tightening.
+Run tests relevant to any affected behavior and preserve project-required checks. Report exit
+codes and distinguish failures caused by the change from pre-existing failures.
