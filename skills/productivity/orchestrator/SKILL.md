@@ -20,8 +20,11 @@ this reference does not authorize spawning agents or publishing changes.
 ## 1. Preconditions
 
 - `test "${HERDR_ENV:-}" = 1`, or say you are outside Herdr and stop.
-- Name this session so peers can address it: `/rename <project>-orchestrator` (the user
-  types it, or asks for it). `ListAgents` then shows the name on its first line. Session
+- Name this session so peers can address it: start it with
+  `claude -n <project>-orchestrator`. A running Claude session cannot rename itself; if it
+  started unnamed, copy `/rename <project>-orchestrator` to the clipboard (`pbcopy` from
+  stdin, no trailing newline) for the user to paste and run. `ListAgents` then shows the
+  name on its first line. Session
   names are machine-wide: a bare `orchestrator` collides with another project's (seen
   2026-10-01, on two projects).
 - Read the repo's `AGENTS.md` for STOP rules, dev-server ports, landing and push rules.
@@ -145,11 +148,20 @@ Answer "do you accept?" with a plain-English proposal and wait for the go:
   have received, mail for a replaced session) is never resent; `agent-mail read` prints it.
   Address by pane id: Herdr names clear when an agent is replaced. Claude to Claude stays on
   SendMessage.
+- **Name every worker at launch.** One name, under about 32 characters, serves as the tab
+  label, the Herdr agent name and the harness's own name. Check `herdr agent list` and
+  `ListAgents` for collisions first. Sessions are not renamed after launch.
+- **A new Claude worker** (only after the user confirms it): create its tab as for Codex
+  below, then `herdr agent start <name> --kind claude --pane <root pane> -- -n <name>
+  <the user's usual flags> 'Read /absolute/path/to/assignment.md and follow it.'`. The `-n`
+  name is its `SendMessage` address.
 - **A new Codex worker** (only after the user confirms it): `herdr tab create --workspace
   <ws> --cwd <worktree> --label <name> --no-focus`, then `herdr agent start <name> --kind
   codex --pane <root pane> -- <the flags the user's own Codex sessions run with>`. Read
   the screen for the model, an empty prompt and no dialog, prompt once with one line that
   names an absolute assignment file, and arm `herdr agent wait <name>` in the background.
+  Once its first turn has created the thread, set the thread name to `<name>` with
+  [the thread-name procedure](references/codex-title.md).
   The fsd skill's `references/herdr.md` has the full procedure (used 2026-10-01).
   Keep the name under about 32 characters: a longer one starts, then every later
   `herdr agent` call answers `agent_not_found`. To change a running Codex session's model or

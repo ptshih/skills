@@ -1,13 +1,15 @@
-# Codex conversation title
+# Naming a Codex worker's thread
 
-Prefer an exposed native rename tool. Otherwise inspect `codex app-server --help`
+Set a new worker's thread name to its role name once its first turn has created the
+thread. Prefer an exposed native rename tool. Otherwise inspect `codex app-server --help`
 and generate the installed JSON schemas into a temporary directory with
 `codex app-server generate-json-schema --out <temporary-directory>`. Check
 `ClientRequest.json`, `v1/InitializeParams.json`, `v2/ThreadReadParams.json`, and
 `v2/ThreadSetNameParams.json` before constructing requests.
 
-Use the current `CODEX_THREAD_ID` or an equally authoritative current-session ID.
-If neither is available, report the missing target instead of guessing from titles.
+Target the worker's thread id: `agent_session.value` from `herdr agent get <pane>`,
+matching the `id` on the first line of its session file. If neither is available,
+report the missing target instead of guessing from titles.
 Use `codex app-server proxy` when an existing control daemon is available; otherwise
 use a temporary `codex app-server --stdio` process. A missing daemon socket does
 not require installing, enabling, or restarting a daemon.
