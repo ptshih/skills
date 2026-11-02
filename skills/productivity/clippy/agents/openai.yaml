@@ -1,3 +1,3 @@
 interface:
   display_name: "Clippy"
-  short_description: "Copy tailored instructions before compaction"
+  short_description: "Preserve the checkpoint before compaction"
