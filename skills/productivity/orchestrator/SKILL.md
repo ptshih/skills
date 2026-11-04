@@ -33,6 +33,13 @@ this reference does not authorize spawning agents or publishing changes.
   name on its first line. Session
   names are machine-wide: a bare `orchestrator` collides with another project's (seen
   2026-10-01, on two projects).
+- When naming or renaming yourself in Herdr, use the same role name for the harness
+  session, Herdr agent, and Herdr tab. For Codex's session title, follow
+  [the thread-name procedure](references/codex-title.md). Get your pane's `tab_id` from
+  `herdr agent get <pane>`, then run `herdr agent rename <pane> <name>` and
+  `herdr tab rename <tab_id> <name>`. Read back the session title, `herdr agent get <pane>`
+  and `herdr tab get <tab_id>` before reporting the rename complete; report any name
+  still pending the user's action.
 - Read the repo's `AGENTS.md` for STOP rules, dev-server ports, landing and push rules.
   Nothing here overrides them.
 - In Claude Code, read `~/.claude/orchestrator.md` if present for session-only harness
