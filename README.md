@@ -20,13 +20,27 @@ npx skills@latest update
 
 ### User-invoked
 
+- **[codebase-design](skills/engineering/codebase-design/SKILL.md)**: Design deep modules with
+  focused interfaces, deliberate seams and testability; compare alternative designs in the main
+  session when asked.
+- **[investigate-first](skills/engineering/investigate-first/SKILL.md)**: Diagnose ambiguous
+  failures before editing: rank hypotheses by evidence, then report the cause and its proof.
 - **[lean-build](skills/engineering/lean-build/SKILL.md)**: Build feature work with a high risk of
   overbuilding: derive acceptance and non-goals, deliver one narrow end-to-end path, leave out
   speculative options, and stop when acceptance passes.
+- **[migration](skills/engineering/migration/SKILL.md)**: Plan and implement reversible
+  transitions with compatibility, data preservation and rollback proof, without implicit
+  destructive steps.
+- **[safe-refactor](skills/engineering/safe-refactor/SKILL.md)**: Restructure code while preserving
+  behavior, interfaces and compatibility, with the same proof before and after.
+- **[surgical-patch](skills/engineering/surgical-patch/SKILL.md)**: Fix a bug at the narrowest
+  responsible layer, with no cleanup outside the fix, and verify the affected behavior.
 - **[tdd](skills/engineering/tdd/SKILL.md)**: Test-first work through behavioral interfaces,
   one test then one minimal implementation per cycle, using relevant test-design guidance.
 - **[walkthrough](skills/engineering/walkthrough/SKILL.md)**: Explain requested code flows step
   by step, with excerpts extracted from the source. Deliver in chat; create a file only when asked.
+- **[verify-and-stop](skills/engineering/verify-and-stop/SKILL.md)**: Check acceptance conditions
+  with the smallest sufficient proof, report the result and stop.
 
 ### Model-invoked
 
@@ -55,10 +69,16 @@ npx skills@latest update
   concerns that backlog; keep operations within scope and commit only when authorized.
 - **[type-tightener](skills/engineering/type-tightener/SKILL.md)**: Address unsafe types introduced
   or exposed by the current change, preserving behavior and leaving unrelated code alone.
+- **[vercel-react-best-practices](skills/engineering/vercel-react-best-practices/SKILL.md)**:
+  Consult Vercel's React and Next.js performance rules for reported problems, measured regressions
+  or explicit optimization reviews, reading only the relevant rules.
 
 ## Productivity
 
 ### User-invoked
+
+- **[grilling](skills/productivity/grilling/SKILL.md)**: Stress-test a plan, decision or idea one
+  focused question at a time, with a recommendation for each, within the requested scope.
 
 - **[retro](skills/productivity/retro/SKILL.md)**: Review a coding session, the current one or a
   named one, for what in the agent's setup slowed it down or let mistakes through: missing
@@ -110,6 +130,24 @@ The find-skills skill is adapted from [Vercel's find-skills skill](https://githu
 
 The retro skill is adapted from [Matt Pocock's retro skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/retro/SKILL.md)
 ([MIT notice](skills/productivity/retro/THIRD_PARTY_NOTICES.md)).
+
+The grilling skill is adapted from [Matt Pocock's grilling skill](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md)
+([MIT notice](skills/productivity/grilling/THIRD_PARTY_NOTICES.md)).
+
+The codebase-design skill is adapted from [Matt Pocock's codebase-design skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/SKILL.md)
+([MIT notice](skills/engineering/codebase-design/THIRD_PARTY_NOTICES.md)).
+
+The vercel-react-best-practices skill is adapted from [Vercel's react-best-practices skill](https://github.com/vercel-labs/agent-skills/blob/main/skills/react-best-practices/SKILL.md)
+([MIT notice](skills/engineering/vercel-react-best-practices/THIRD_PARTY_NOTICES.md)).
+
+The investigate-first, surgical-patch, safe-refactor, verify-and-stop and migration skills are
+adapted from Caveman's [investigate-first](https://github.com/JuliusBrussee/caveman/blob/main/skills/investigate-first/SKILL.md),
+[surgical-patch](https://github.com/JuliusBrussee/caveman/blob/main/skills/surgical-patch/SKILL.md),
+[safe-refactor](https://github.com/JuliusBrussee/caveman/blob/main/skills/safe-refactor/SKILL.md),
+[verify-and-stop](https://github.com/JuliusBrussee/caveman/blob/main/skills/verify-and-stop/SKILL.md)
+and [migration](https://github.com/JuliusBrussee/caveman/blob/main/skills/migration/SKILL.md) skills
+(Apache-2.0 and MIT notices in each skill's `THIRD_PARTY_NOTICES.md`, for example
+[migration's](skills/engineering/migration/THIRD_PARTY_NOTICES.md)).
 
 The repository layout follows [mattpocock/skills](https://github.com/mattpocock/skills).
 
