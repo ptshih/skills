@@ -89,8 +89,9 @@ uncommitted files, near-full contexts, pending harness updates).
 3. Send each teammate one handoff: a self-contained first line; who leads now, its ownership
    by path, where to report, no commits or pushes; first tasks if given; and two or three
    status questions (uncommitted files and commit ids, open findings, what it waits on).
-4. Keep the roster, addresses and protocol in the task's notes file. Huddle only when
-   assignments conflict, ownership is unclear, a restart needs shared agreement, or the user asks.
+4. Keep the roster, addresses and protocol in the task's notes file. When assignments
+   conflict, ownership is unclear or a restart needs shared agreement, collect a short
+   read-back from each affected teammate and resolve mismatches before work resumes.
 
 ## Routing
 
