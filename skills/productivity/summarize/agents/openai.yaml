@@ -1,6 +1,0 @@
-interface:
-  display_name: "Summarize"
-  short_description: "Summarize anything in plain English"
-
-policy:
-  allow_implicit_invocation: false

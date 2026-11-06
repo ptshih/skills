@@ -25,9 +25,6 @@ npx skills@latest update
   session when asked.
 - **[investigate-first](skills/engineering/investigate-first/SKILL.md)**: Diagnose ambiguous
   failures before editing: rank hypotheses by evidence, then report the cause and its proof.
-- **[lean-build](skills/engineering/lean-build/SKILL.md)**: Build feature work with a high risk of
-  overbuilding: derive acceptance and non-goals, deliver one narrow end-to-end path, leave out
-  speculative options, and stop when acceptance passes.
 - **[migration](skills/engineering/migration/SKILL.md)**: Plan and implement reversible
   transitions with compatibility, data preservation and rollback proof, without implicit
   destructive steps.
@@ -61,8 +58,6 @@ npx skills@latest update
   migration file: non-destructive, reversible, and rehearsed on a disposable database.
 - **[perf-optimizer](skills/engineering/perf-optimizer/SKILL.md)**: Investigate reported performance
   problems, measured regressions or explicit optimization requests, with before and after measurements.
-- **[repo-showcase](skills/engineering/repo-showcase/SKILL.md)**: Improve requested README presentation,
-  badges, demos or GitHub metadata, respecting existing commit and publishing authorization.
 - **[security-auditor](skills/engineering/security-auditor/SKILL.md)**: Review security-sensitive
   changes and requested audits for injection, traversal, SSRF, access-control flaws and related risks.
 - **[todo](skills/engineering/todo/SKILL.md)**: Read or update `TODO.md` when the request clearly
@@ -86,23 +81,15 @@ npx skills@latest update
   information, unused skills and tools, and checks that catch little. It proposes numbered
   changes with evidence and applies only the ones the user picks.
 
-- **[summarize](skills/productivity/summarize/SKILL.md)**: Summarize documents, plans, diffs or
-  threads in plain English, concise by default and detailed when requested.
-
 ### Model-invoked
 
 - **[clippy](skills/productivity/clippy/SKILL.md)**: Preserve the checkpoint directly, then let the user run native compaction; clipboard output only on request.
-- **[find-skills](skills/productivity/find-skills/SKILL.md)**: Find and install agent skills when
-  asked for one, evaluating instructions before installation and respecting the selected scope.
 - **[handoff](skills/productivity/handoff/SKILL.md)**: Summarize the current session so a fresh
   agent can continue. It prints the handoff in chat, copies the same text to the clipboard, and
   saves a temporary Markdown file with a clickable path. Clipboard copying uses `pbcopy` on
   macOS; if it fails, the agent reports the failure and still provides the chat output and file.
   Inside Herdr, it offers to start the next session in a new tab with the handoff as its first
   prompt.
-- **[huddle](skills/productivity/huddle/SKILL.md)**: Align an existing authorized team when
-  assignments conflict, ownership is unclear, a restart needs agreement, or the user requests
-  a huddle. Collect short read-backs, resolve mismatches and agree on a shared start.
 - **[orchestrator](skills/productivity/orchestrator/SKILL.md)**: Lead a team of agents the way
   Claude Code's native agent teams work: named teammates, a shared task list, direct messages,
   idle notifications, plan approval and shutdown. Claude teammates use the native mechanism;
@@ -121,12 +108,6 @@ The [upstream MIT notice](skills/productivity/handoff/THIRD_PARTY_NOTICES.md) is
 
 The tdd skill is adapted from [Matt Pocock's tdd skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md)
 ([MIT notice](skills/engineering/tdd/THIRD_PARTY_NOTICES.md)).
-
-The lean-build skill is adapted from [Caveman's lean-build skill](https://github.com/JuliusBrussee/caveman/blob/main/skills/lean-build/SKILL.md)
-([Apache-2.0 and MIT notices](skills/engineering/lean-build/THIRD_PARTY_NOTICES.md)).
-
-The find-skills skill is adapted from [Vercel's find-skills skill](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md)
-([MIT notice](skills/productivity/find-skills/THIRD_PARTY_NOTICES.md)).
 
 The retro skill is adapted from [Matt Pocock's retro skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/retro/SKILL.md)
 ([MIT notice](skills/productivity/retro/THIRD_PARTY_NOTICES.md)).

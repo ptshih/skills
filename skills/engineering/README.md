@@ -6,7 +6,6 @@ Daily code work.
 
 - **[codebase-design](./codebase-design/SKILL.md)**: Design deep modules with focused interfaces, deliberate seams and testability; compare alternative designs in the main session when asked.
 - **[investigate-first](./investigate-first/SKILL.md)**: Diagnose ambiguous failures before editing: rank hypotheses by evidence, then report the cause and its proof.
-- **[lean-build](./lean-build/SKILL.md)**: Build feature work with a high risk of overbuilding: derive acceptance and non-goals, deliver one narrow end-to-end path, and stop when acceptance passes.
 - **[migration](./migration/SKILL.md)**: Plan and implement reversible transitions with compatibility, data preservation and rollback proof, without implicit destructive steps.
 - **[safe-refactor](./safe-refactor/SKILL.md)**: Restructure code while preserving behavior, interfaces and compatibility, with the same proof before and after.
 - **[surgical-patch](./surgical-patch/SKILL.md)**: Fix a bug at the narrowest responsible layer, with no cleanup outside the fix, and verify the affected behavior.
@@ -26,7 +25,6 @@ Model- or user-reachable: type `/<name>`, or the agent reaches for it when the r
 - **[doc-drift-sentinel](./doc-drift-sentinel/SKILL.md)**: Update affected docs when documented behavior, APIs, CLI flags, configuration or usage changes.
 - **[migration-guard](./migration-guard/SKILL.md)**: Checklist for a schema migration file: non-destructive, reversible, and rehearsed on a disposable database.
 - **[perf-optimizer](./perf-optimizer/SKILL.md)**: Investigate reported performance problems, measured regressions or explicit optimization requests, with before and after measurements.
-- **[repo-showcase](./repo-showcase/SKILL.md)**: Improve requested README presentation, badges, demos or GitHub metadata, respecting existing commit and publishing authorization.
 - **[security-auditor](./security-auditor/SKILL.md)**: Review security-sensitive changes and requested audits for injection, traversal, SSRF, access-control flaws and related risks.
 - **[todo](./todo/SKILL.md)**: Read or update `TODO.md` when the request clearly concerns that backlog; keep operations within scope and commit only when authorized.
 - **[type-tightener](./type-tightener/SKILL.md)**: Address unsafe types introduced or exposed by the current change, preserving behavior and leaving unrelated code alone.
