@@ -12,13 +12,11 @@ three links in `AGENTS.md` point into `rules/`, where the linked files live; `RE
 that the build tooling stays upstream; `metadata.json` is omitted; `agents/openai.yaml` is new.
 
 The upstream repository declares the MIT License in its `README.md` and in this skill's
-frontmatter (`license: MIT`, `author: vercel`) but ships no `LICENSE` file. The MIT License text
-follows.
+frontmatter (`license: MIT`, `author: vercel`) but ships no `LICENSE` file or copyright notice,
+so none is reproduced here. The standard MIT License text follows.
 
 ```text
 MIT License
-
-Copyright (c) 2026 Vercel, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
