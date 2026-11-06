@@ -83,12 +83,12 @@ npx skills@latest update
 - **[huddle](skills/productivity/huddle/SKILL.md)**: Align an existing authorized team when
   assignments conflict, ownership is unclear, a restart needs agreement, or the user requests
   a huddle. Collect short read-backs, resolve mismatches and agree on a shared start.
-- **[orchestrator](skills/productivity/orchestrator/SKILL.md)**: Take over and run a Herdr space
-  of named agent sessions as its orchestrator. It discovers the roster, maps ownership by path
-  and confirms the authorized scope, then routes work through inboxes, watches each agent's
-  context and compacts at task boundaries, and reviews and lands work by path. Review matches
-  the change's risk; routine phase changes do not require huddles.
-  Herdr only.
+- **[orchestrator](skills/productivity/orchestrator/SKILL.md)**: Lead a team of agents the way
+  Claude Code's native agent teams work: named teammates, a shared task list, direct messages,
+  idle notifications, plan approval and shutdown. Claude teammates use the native mechanism;
+  Codex and Antigravity teammates run in a Herdr space through per-harness adapters. It confirms
+  the authorized scope, watches each teammate's context and compacts at task boundaries, and
+  reviews and lands work by path, with review matched to the change's risk.
 
 ## Attribution
 

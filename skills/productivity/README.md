@@ -18,5 +18,5 @@ Model- or user-reachable: type `/<name>`, or the agent reaches for it when the r
 - **[find-skills](./find-skills/SKILL.md)**: Find and install requested skills after inspecting their instructions, respecting the selected skill and scope.
 - **[handoff](./handoff/SKILL.md)**: Summarize the current session so a fresh agent can continue, in chat, on the clipboard and in a temporary Markdown file; inside Herdr, it offers to start the next session in a new tab.
 - **[huddle](./huddle/SKILL.md)**: Align an existing authorized team when assignments conflict, ownership is unclear, a restart needs agreement, or the user requests a huddle.
-- **[orchestrator](./orchestrator/SKILL.md)**: Take over and run a Herdr space of named agent sessions: discover the roster, map ownership by path, route work through inboxes, watch context and compact, then review and land by path.
+- **[orchestrator](./orchestrator/SKILL.md)**: Lead an agent team modeled on Claude Code's native agent teams, with Codex or Antigravity teammates through Herdr: shared task list, inbox messages, context watch and compaction, then review and land by path.
 

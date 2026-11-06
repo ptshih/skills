@@ -3,7 +3,8 @@
 # Prints each session's current context size without touching its pane, so it works while the
 # agent is busy. Session ids come from `herdr agent list` (.agent_session.value).
 # - Claude: the last assistant usage record in <project-transcript-dir>/<id>.jsonl (input + cache
-#   creation + cache read). The dir is ~/.claude/projects/<cwd with / replaced by ->. Percentages
+#   creation + cache read). The dir is ${CLAUDE_CONFIG_DIR:-~/.claude}/projects/<cwd with / replaced
+#   by -> for the profile the session runs under. Percentages
 #   assume a 1M window; the footer's "Ctx Used" on Opus 5.5 sessions matched that on 2026-09-30.
 # - Codex: when no Claude transcript has that id, the last token_count record in
 #   ~/.codex/sessions/*/*/*/rollout-*-<id>.jsonl: the last request's input tokens against the
