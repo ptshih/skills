@@ -70,8 +70,10 @@ another lane) is yours to route.
 
 ## Status check
 
-When asked: a table (agent, state, doing), then flags, then the decision queue: every
-question an agent is waiting on the user for, oldest first, with its recommendation.
+For every status check, asked for or your own: one short paragraph per agent (its state,
+what it is doing or just finished, and anything it waits on), then flags, then the decision
+queue: every question an agent is waiting on the user for, oldest first, with its
+recommendation. Notes on single events stay one line.
 
 ## Tie-breaks
 
