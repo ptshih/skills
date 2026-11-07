@@ -96,6 +96,11 @@ npx skills@latest update
   Codex and Antigravity teammates run in a Herdr space through per-harness adapters. It confirms
   the authorized scope, watches each teammate's context and compacts at task boundaries, and
   reviews and lands work by path, with review matched to the change's risk.
+- **[overlord](skills/productivity/overlord/SKILL.md)**: Watch the other agents in a workspace as
+  the user's eyes and ears, without adding check-ins. It flags destructive actions, work outside
+  a worktree, overlapping lanes, churn, false "done" claims and leftover worktrees, keeps one
+  queue of questions waiting on the user, and judges conflicts between agents. Inside Herdr, a
+  bundled watcher polls agents and git locally and wakes it only on changes.
 
 ## Attribution
 
