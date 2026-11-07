@@ -61,9 +61,10 @@ saw, where (agent, file, commit) and what you recommend.
   its next break (the orchestrator skill's "Context watch and compaction").
 - Stale sessions (idle a day or more) and undelivered mail.
 
-Leftovers: after a change lands, its owner removes the worktree, branch and any throwaway
-resources (database branches, servers, ports); merged-but-undeployed work goes to the
-release owner. Ask the owner; with no live owner, tell the user what is safe to remove.
+Leftovers: after a change lands, its worktree, branch and any throwaway resources (database
+branches, servers, ports) get removed by whoever the repository's agent instructions make
+responsible, often the release owner rather than the builder; merged-but-undeployed work
+goes to the release owner. Ask that owner; with no live owner, tell the user what is safe to remove.
 Never delete anything yourself. A handoff an agent didn't send (a ready PR, a finding for
 another lane) is yours to route.
 
