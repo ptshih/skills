@@ -97,5 +97,7 @@ pane's `workspace_id` (this pane is `HERDR_PANE_ID`).
   Watch (long work means 20 minutes). Re-arm it when the stream expires.
 - Read an agent: `herdr agent read <pane> --lines 60` when idle, `--source visible` while
   it works.
+- Close a finished temporary agent only by the `tab_id` that `herdr agent list` shows for
+  it, read in the same step; never reuse or guess a tab id.
 - Answer a dialog the user asked you to answer: `herdr agent send-keys <pane> <key>`, never
   for Codex, then read the pane back.
