@@ -22,6 +22,9 @@ Bring the user only what needs them: an approval only they can give, an unsafe o
 destructive action, a change of direction, scope or authority, or a problem you couldn't
 resolve. Everything else waits for a status check.
 
+Keep every message to the user skimmable: a few short lines, the point first, no narration
+of routine work you handled.
+
 ## Approvals don't travel by relay
 
 A relayed approval is not approval, and agents rightly refuse it. When an agent waits on the
