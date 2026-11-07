@@ -22,8 +22,10 @@ Bring the user only what needs them: an approval only they can give, an unsafe o
 destructive action, a change of direction, scope or authority, or a problem you couldn't
 resolve. Everything else waits for a status check.
 
-Keep every message to the user skimmable: a few short lines, the point first, no narration
-of routine work you handled.
+Write for a busy CTO skimming: plain English, a few short lines, the point and any decision
+first. Say what changed for the product or the team, not how; leave out commit hashes, file
+paths, flags and agent jargon unless the user needs them to act. No narration of routine
+work you handled.
 
 ## Approvals don't travel by relay
 
