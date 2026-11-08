@@ -9,7 +9,7 @@ argument-hint: "A file path for the report, or nothing to report in chat"
 
 Memory exists so the next session starts out knowing what the user decided and what is true about
 their setup and projects, without asking again and without acting on something that stopped being
-true. Each memory should be a current, correct fact or rule that earns its line in a small index.
+true. Each memory should be a current, correct fact that earns its line in a small index.
 Memory drifts as the work moves on. Dreaming is the offline pass that compares what memory says
 with what has happened since, and corrects it.
 
