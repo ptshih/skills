@@ -72,6 +72,12 @@ npx skills@latest update
 
 ### User-invoked
 
+- **[dream](skills/productivity/dream/SKILL.md)**: Tidy the agent memory store offline, from a
+  nightly job or when typed. It checks each memory against recent sessions and, for project
+  memories, the repository's code and git log; fixes stale facts, merges duplicates, deletes only
+  with evidence and saves durable decisions the user stated. It never loosens authority rules or
+  edits outside the store, then commits and writes a short report.
+
 - **[grilling](skills/productivity/grilling/SKILL.md)**: Stress-test a plan, decision or idea one
   focused question at a time, with a recommendation for each, within the requested scope.
 

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dream"
+  short_description: "Tidy agent memory against recent sessions and code"
+
+policy:
+  allow_implicit_invocation: false

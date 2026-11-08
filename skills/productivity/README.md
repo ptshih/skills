@@ -6,6 +6,8 @@ General workflow tools, not code-specific.
 
 Reachable only by typing its name, such as `/retro`; the agent never starts it on its own.
 
+- **[dream](./dream/SKILL.md)**: Tidy the agent memory store offline, nightly or when typed: check each memory against recent sessions and the code, fix stale facts, merge duplicates, delete only with evidence, then commit and report.
+
 - **[grilling](./grilling/SKILL.md)**: Stress-test a plan, decision or idea one focused question at a time, with a recommendation for each, within the requested scope.
 
 - **[retro](./retro/SKILL.md)**: Review a coding session for what in the agent's setup slowed it down or let mistakes through, propose numbered changes with evidence, and apply only the ones the user picks.
