@@ -24,7 +24,8 @@ def git_state():
         parts = line.split()
         trees[parts[0]] = parts[2] if len(parts) > 2 else parts[1]
     folder = os.path.join(REPO, ".worktrees")
-    dirs = {os.path.join(folder, d) for d in os.listdir(folder)} if os.path.isdir(folder) else set()
+    dirs = {os.path.join(folder, d) for d in os.listdir(folder)
+            if os.path.isdir(os.path.join(folder, d))} if os.path.isdir(folder) else set()
     return {
         "main": git("rev-parse", "--short", "main").strip(),
         "branch": git("branch", "--show-current").strip(),
