@@ -19,6 +19,8 @@ herdr tab list    # tab labels are the roles
 
 ## Naming
 
+- Name agents role first and short; add a model suffix only for standing reviewers
+  (`review-<model>`), and name temporary workers by task.
 - One name under about 32 characters is the tab label, the Herdr agent name and the harness's
   own name. A longer one starts, then every later `herdr agent` call answers `agent_not_found`.
 - Check `herdr agent list` and `ListAgents` for collisions before launch.
