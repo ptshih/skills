@@ -99,5 +99,7 @@ pane's `workspace_id` (this pane is `HERDR_PANE_ID`).
   it works.
 - Close a finished temporary agent only by the `tab_id` that `herdr agent list` shows for
   it, read in the same step; never reuse or guess a tab id.
+- Typing a prompt with `herdr agent prompt`: pass the text single-quoted or from a quoted
+  heredoc; backticks or `$` inside double quotes run as shell commands and vanish.
 - Answer a dialog the user asked you to answer: `herdr agent send-keys <pane> <key>`, never
   for Codex, then read the pane back.
