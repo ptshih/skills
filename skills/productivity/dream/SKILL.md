@@ -41,6 +41,10 @@ Run `agent-memory --help` and `agent-memory brief`, then read every memory file 
 
 - Rewrite a stale fact as the current truth, citing the evidence (date and session id, or commit).
 - Merge memories about the same subject into one file, delete the rest and fix `[[links]]` to them.
+  Merge only once a subject has at least two related memories and the newest is at least a day
+  old (`git log -1 --format=%cs -- <file>` in the store). Two claims that differ by a negation, a
+  number, a date or a named party are different facts, not duplicates: keep both and report the
+  pair. When unsure, keep both and report.
 - Delete a memory only when the evidence contradicts it or the repository now records it. Remove
   its file with a plain `rm <file>`, one file per command.
 - Trim bloat: each file under 2 KB and its description one short line; move detail out of the
