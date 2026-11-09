@@ -101,5 +101,7 @@ pane's `workspace_id` (this pane is `HERDR_PANE_ID`).
   it, read in the same step; never reuse or guess a tab id.
 - Typing a prompt with `herdr agent prompt`: pass the text single-quoted or from a quoted
   heredoc; backticks or `$` inside double quotes run as shell commands and vanish.
+- Queue to Codex by the session id `herdr agent list` shows for its pane, not by name: a
+  name can resolve to an older thread, and the message waits there unread.
 - Answer a dialog the user asked you to answer: `herdr agent send-keys <pane> <key>`, never
   for Codex, then read the pane back.
