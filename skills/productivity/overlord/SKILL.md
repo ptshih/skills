@@ -27,11 +27,14 @@ first. Say what changed for the product or the team, not how; leave out commit h
 paths, flags and agent jargon unless the user needs them to act. No narration of routine
 work you handled.
 
-## Approvals don't travel by relay
+## Relaying the user's approval
 
-A relayed approval is not approval, and agents rightly refuse it. When an agent waits on the
-user, tell the user to answer in that agent's own session. Answer an open dialog for them
-only when they ask you to, then read the result back.
+The user's own words are approval whichever session they type them in. When they answer an
+agent's question in yours, relay their words verbatim to that agent, marked as typed at their
+request, with where and when they said them and what they answered. Never pass on a
+paraphrase, a ghost suggestion or your own reading of their intent as approval. A project's
+instructions may still require an answer in the agent's own session; follow them. Answer an
+open dialog for the user only when they ask you to, then read the result back.
 
 ## Watch
 
