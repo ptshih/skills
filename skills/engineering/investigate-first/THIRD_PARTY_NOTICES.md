@@ -3,8 +3,9 @@
 `SKILL.md` and `agents/openai.yaml` are adapted from
 [Caveman's investigate-first skill](https://github.com/JuliusBrussee/caveman/blob/main/skills/investigate-first/SKILL.md).
 Changes: the skill is user-invoked (`disable-model-invocation: true` and
-`policy.allow_implicit_invocation: false`), and its description is shorter, without trigger
-phrasing.
+`policy.allow_implicit_invocation: false`), its description is shorter, without trigger
+phrasing, and its body is expanded with a root-cause method, scope rules and a reassessment
+after three failed hypotheses.
 
 Caveman is licensed under the Apache License, Version 2.0. Its `NOTICE` reads, in the part that
 applies here:
